@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
   const navigate = useNavigate();
   return (
     <Card
-      w={{ base: "80vw", sm: "3xs", lg: "200px" }}
+      w={{ base: "80vw", sm: "3xs", md: "2xs" }}
       border="1px"
       borderColor="brand.100"
       borderRadius={"lg"}
@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
           mx="auto"
         />
       </CardBody>
-      {/* <CardFooter
+      <CardFooter
         align={"center"}
         py={3}
         flexDirection="column"
@@ -73,7 +73,7 @@ export default function ProductCard({ product }) {
         >
           View Product
         </Button>
-      </CardFooter> */}
+      </CardFooter>
     </Card>
   );
 }

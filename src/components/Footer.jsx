@@ -268,7 +268,7 @@ export default function Footer() {
               </Stack> */}
             {/* </Stack> */}
             <Stack color="text.300" mt={{ md: 3 }}>
-              <Stack align={{ md: "flex-start", base: "center" }}>
+              <Stack >
                 <ListHeader gap={"3"}>Customer Support</ListHeader>
               </Stack>
               <Link
@@ -303,7 +303,7 @@ export default function Footer() {
                 care@suryanorganic.com
               </Link>
             </Stack>
-            <Stack align={"center"} mt={{ md: 3 }}>
+            <Stack align={"flex-start"}  mt={{ md: 3 }}>
               {/* <ListHeader align={"flex-start"}>Talk To Our Vaidya</ListHeader>
               <Link
                 textDecoration="none"
@@ -332,10 +332,11 @@ export default function Footer() {
               {/* </Stack>
 
             <Stack align={"flex-start"} gap={"3"} ml={{ lg: 10 }} color="brand.900"> */}
-              <ListHeader align={"flex-start"} marginBottom={5}>
+              <ListHeader  marginBottom={5}>
                 We Accepts Payments via
               </ListHeader>
               <Image
+              ml={"-15px"}
                 src={
                   "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/footer/payment method.png hnghngh.png"
                 }

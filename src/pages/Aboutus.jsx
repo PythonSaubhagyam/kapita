@@ -13,48 +13,28 @@ const Aboutus = () => {
       <Container maxW={"container.xl"} alignContent={"flex-start"}>
         <BreadCrumbCom second={"About Us"} secondUrl={"/about-us"} />{" "}
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        <Box
-          w={"100%"}
-          bgImage={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg"
-          }
-          bgSize="cover"
-          bgPosition="center"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mt={"-10px"}
-          py={20}
-          boxShadow={"0px 0px 0px 0px"}
-          height={"550px"}
-          mb={10}
-          // filter="brightness(200%)"
-          // style={{ backdropFilter: "blur(10px)" }}
-        >
-          <Text
-            pb={2}
-            color={"brand.100"}
-            textAlign={"center"}
-            fontSize="7xl"
-            fontWeight="600"
-          >
-            About Us
-          </Text>
+      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg" />
 
-          {/* <Text
-            pb={2}
-            color={"brand.100"}
-            textAlign={"center"}
-            textShadow={"1px 1px 2px lightgreen"}
-            fontSize="7xl"
-            fontWeight="black"
-          >
-            About us
-          </Text> */}
-        </Box>
-        <VStack maxW={"6xl"} my={8}>
-          <Text fontWeight={600} fontSize={"2xl"} color={"text.300"}>
+        <Text
+          pb={2}
+          color={"brand.100"}
+          textAlign={"center"}
+          fontSize={{ lg: "7xl", md: "5xl", base: "xl" }}
+          fontWeight="600"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex="1"
+          // Optional: Add background to improve text readability
+        >
+          About Us
+        </Text>
+      </Container>
+      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
+        <VStack maxW={"6xl"} my={8} px={{base:8,md:0}}>
+          <Text fontWeight={600} textAlign={"justify"} fontSize={{md:"2xl",base:"xl"}} color={"text.300"}>
             Kapita.in is a marketplace to "discover unique indian products"
             including handmade, vintage, ethnic and natural products from india.
           </Text>

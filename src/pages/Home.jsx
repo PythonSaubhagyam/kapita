@@ -12,13 +12,13 @@ import {
   FaUserMd,
   FaUserPlus,
   FaBlind,
-  FaHeart
+  FaHeart,
 } from "react-icons/fa";
 import { MdWaterDrop } from "react-icons/md";
 import { FaGears } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
 
-import ProductListSection from "../components/ProductListSection";
+import ProductListSectionHome from "../components/ProductListSectionHome";
 import {
   Container,
   Flex,
@@ -82,58 +82,40 @@ const Diseases = [
     title: "Slow Down Ageing",
   },
 ];
-const NewArrival = [
-  { id: 1645, image1: require("../assets/home/bootle.jpg") },
-  { id: 1641, image1: require("../assets/home/sipper_bottle.jpg") },
-  { id: 1646, image1: require("../assets/home/lacquer_jug.jpg") },
-  { id: 1635, image1: require("../assets/home/coated_glass.jpg") },
-  { id: 1638, image1: require("../assets/home/coated.jpg") },
-  { id: 1637, image1: require("../assets/home/glass_spoon.jpg") },
-];
-
-const imageInfo = [
+const banner = [
   {
-    src:require("../assets/Home/01.jpg"),
-    name: "NON-GMO Product",
+    id: 11,
+    alt_text: "Image2",
+    image: require("../assets/Home Page Banners/01.jpg"),
+    display_status: true,
+    image_url: "/products/2488",
   },
   {
-    src:require("../assets/Home/02.jpg"),
-    name: "Ethical & Natural",
+    id: 12,
+    alt_text: "Image3",
+    image: require("../assets/Home Page Banners/02.jpg"),
+    display_status: true,
+    image_url: "/products/2462",
   },
   {
-    src:require("../assets/Home/03.jpg"),
-    name: "Vegetarian",
+    id: 13,
+    alt_text: "Image3",
+    image: require("../assets/Home Page Banners/03.jpg"),
+    display_status: true,
+    image_url: "/products/2453",
   },
   {
-    src:require("../assets/Home/04.jpg"),
-    name: "Quality you'll Love Guaranteed",
-  },
-  {
-    src:require("../assets/Home/05.jpg"),
-    name: "Minimum Order Value Rs.250",
-  },
-  {
-    src:require("../assets/Home/06.jpg"),
-    name: "Best Service",
+    id: 14,
+    alt_text: "Image4",
+    image: require("../assets/Home Page Banners/04.jpg"),
+    display_status: true,
+    image_url: "/products/2445",
   },
 ];
 
-const Details = [
-  {
-    id: 1,
-    image: require("../assets/Home/HZSIirCVHj.jpg"),
-    title: "History Of Copper Utensils",
-    content:
-      "Scientifically proven to be effective . Copper utensils were used as tradition in our country from hundreds of years.",
-  },
-  {
-    id: 2,
-    image: require("../assets/Home/gFADb6goeQ.jpg"),
-    title: "Environmentally friendly",
-    content:
-      "Good for you and good for the environment. Join us in the  battle against plastic.",
-  },
-];
+
+
+
 
 export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
@@ -147,17 +129,26 @@ export default function Home() {
   const [blogs, setBlogs] = useState([]);
   const isMobiles = width <= 768;
   const navigate = useNavigate();
+  const [mustTry, setMustTry] = useState([]);
   useEffect(() => {
     CheckOrSetUDID();
-    getHomePageData();
+    //getHomePageData();
     getBlogs();
+    getMustTry();
   }, []);
 
-  async function getHomePageData() {
-    const response = await client.get("/home");
-    if (response.data.status === true) {
-      setBanners(response.data.banners);
-      setHome(response.data);
+  // async function getHomePageData() {
+  //   const response = await client.get("/home");
+  //   if (response.data.status === true) {
+  //     setBanners(response.data.banners);
+  //     setHome(response.data);
+  //   }
+  //   setLoading(false);
+  // }
+  async function getMustTry() {
+    const response = await client.get("musttry/list");
+    if (response) {
+      setMustTry(response.data.data);
     }
     setLoading(false);
   }
@@ -181,13 +172,13 @@ export default function Home() {
         <> */}
       <Navbar />
       <Container maxW={"container.xl"} px={0}>
-        {/* {loading === true ? (
+        {loading === true ? (
           <Skeleton h={489}></Skeleton>
         ) : (
-           <Carousel banners={banners} />
+           <Carousel banners={banner} />
          
-        )} */}
-        <Image w={"100%"} h={489} src={require("../assets/Home/1.jpg")} />
+        )}
+       
       </Container>
 
       <Container maxW={"container.xl"} mb={8} mt={2} px={0}>
@@ -253,22 +244,24 @@ export default function Home() {
           color={"brand.500"}
           as={RouterLink}
           to={"/about-us"}
-          mx={"45%"}
+          mx={{lg:"45%",base:"33%",md:"42%"}}
           border={"1px"}
           borderColor={"brand.500"}
           p={3}
           borderRadius={"10px"}
-          _hover={{textDecoration:"none",color:"white",bgColor:"text.500"}}
+          _hover={{
+            textDecoration: "none",
+            color: "white",
+            bgColor: "text.500",
+          }}
         >
           Read more
         </Link>
       </Container>
 
       <Container mb={5} px={0} maxW={"container.xl"} centerContent>
-        <LazyLoadImage
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/03.jpg"
-          }
+        <Image
+          src={require("../assets/Home/Kapita_certificate.jpg")}
           alt=""
           style={{
             opacity: 1,
@@ -288,8 +281,8 @@ export default function Home() {
             <Image src={require("../assets/Home/V5kf29fiII.jpg")} />
           </GridItem>
           <GridItem>
-            <Flex flexDirection={"column"} gap={4} px={10} pt={20}>
-              <Heading color={"brand.500"}>Copper Water Bottle 900 ML</Heading>
+            <Flex flexDirection={"column"} gap={4} px={{md:10}} pt={{md:20}}>
+              <Heading fontSize={{md:28,base:24}} color={"brand.500"}>Copper Water Bottle 900 ML</Heading>
               <Text fontSize={"19px"} color="text.300">
                 <span style={{ fontSize: "24px", fontWeight: 600 }}>RS</span> .
                 690.00/-
@@ -299,8 +292,8 @@ export default function Home() {
                 Quality
               </Text>
               <Flex alignItems={"center"}>
-                {[0,1,2,3].map(()=>(
-                <FaHeart style={{marginRight:3}}/>
+                {[0, 1, 2, 3].map(() => (
+                  <FaHeart style={{ marginRight: 3 }} />
                 ))}
                 <CiHeart fontSize={"22px"} />
               </Flex>
@@ -341,7 +334,7 @@ export default function Home() {
           }}
           gap={4}
           my={6}
-          px={{ base: 7, md: 15, xl: "10%" }}
+          px={{ base: 9, md: 15, xl: "10%" }}
         >
           {Diseases.map((data) => (
             <GridItem cursor={"pointer"}>
@@ -367,8 +360,8 @@ export default function Home() {
             <Image src={require("../assets/Home/HZSIirCVHj.jpg")} />
           </GridItem>
           <GridItem cursor={"pointer"}>
-            <Flex flexDirection={"column"} gap={6} my={"20%"}>
-              <Heading fontSize={"28px"} color={"text.300"}>
+            <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
+              <Heading fontSize={{md:"28px",base:24}}color={"text.300"}>
                 History Of Copper Utensils
               </Heading>
               <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
@@ -391,8 +384,8 @@ export default function Home() {
             </Flex>
           </GridItem>
           <GridItem>
-            <Flex flexDirection={"column"} gap={6} my={"20%"}>
-              <Heading fontSize={"28px"} color={"text.300"}>
+            <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
+              <Heading fontSize={{md:"28px",base:24}} color={"text.300"}>
                 Environmentally friendly
               </Heading>
               <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
@@ -420,10 +413,10 @@ export default function Home() {
         </Grid>
       </Container>
 
-      <ProductListSection
+      <ProductListSectionHome
         title="Must Try : KAPITA Products"
         loading={loading}
-        products={NewArrival}
+        products={mustTry}
       />
 
       <Container maxW={{ base: "100vw", md: "container.xl" }}>
@@ -434,18 +427,18 @@ export default function Home() {
         >
           <Heading
             color="brand.500"
-            size="lg"
+            fontSize={{md:33,base:20}}
             mx="auto"
             align={"center"}
             mt={3}
-            pb={"10px"}
+           
           >
             OUR CERTIFICATIONS & AWARDS
           </Heading>
         </Box>
         <Text my={5} textAlign={"center"} color="text.300">
-          We are committed to quality and each of our facility is independently
-          certified by an industry-accredited agency.
+          We are committed to quality and each of our facilities is
+          independently certified by an industry-accredited agency.
         </Text>
         <Flex
           justifyContent="space-evenly"
@@ -524,106 +517,13 @@ export default function Home() {
           </Stat>
         </SimpleGrid>
       </Container>
-      <Container maxW={{ base: "100vw", md: "container.xl" }}>
-        {/* <Box
-          w="100%"
-          backgroundImage={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"
-          }
-          backgroundSize="100%"
-          backgroundPosition="50% 100%"
-          backgroundRepeat={"no-repeat"}
-        >
-          <Heading
-            color="brand.500"
-            size="lg"
-            mx="auto"
-            align={"center"}
-            mb={"5"}
-            mt={3}
-            pb={"10px"}
-          >
-            BRAND PARTNERS
-          </Heading>
-        </Box>
-        <Grid
-          templateColumns={{
-            base: "repeat(2,1fr)",
-            md: "repeat(3,1fr)",
-            xl: "repeat(6,1fr)",
-          }}
-          spacing={{ base: 10, md: 14 }}
-          py={3}
-          px={{ base: 15, md: 20, lg: 24 }}
-        >
-          {brands?.map((brand, index) => (
-            <GridItem as={RouterLink} to={brand?.href ?? "#"}>
-              <Image
-                as={LazyLoadImage}
-                key={index}
-                src={brand.src}
-                boxSize={{
-                  base: "150px",
-                  md: "150px",
-                  lg: "180px",
-                }}
-                alt={brand.alt}
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }}
-              />
-            </GridItem>
-          ))}
-        </Grid> */}
-
-        <LazyLoadImage
-          w="100%"
-          mx="auto"
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
+      <Container maxW={{ base: "100vw", md: "container.xl" }} centerContent>
+        <Image
+          my={10}
+          src={require("../assets/Home/kapita_icon.jpg")}
+          w={{ md: "65%" }}
         />
-        <Grid
-          templateColumns={{
-            base: "repeat(3, 1fr)",
-            md: "repeat(3, 1fr)",
-            lg: "repeat(6,1fr)",
-          }}
-          gap={2}
-          my={6}
-          mx={{ md: "15%", base: 3 }}
-        >
-          {imageInfo?.map((data) => (
-            <GridItem>
-              <Flex
-                flexDirection={"column"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                <LazyLoadImage
-                  cursor={"pointer"}
-                  transition="all 1s ease"
-                  _hover={{
-                    transform: "scale(1.25)",
-                  }}
-                  src={data.src}
-                  alt={data.name}
-                  style={{
-                    opacity: 1,
-                    transition: "opacity 0.7s",
-                    width: "100px",
-                    // Note the corrected syntax here
-                  }}
-                />
-                <Text textAlign={"center"} fontSize={"14px"} mt={2}>
-                  {data.name}
-                </Text>
-              </Flex>
-            </GridItem>
-          ))}
-        </Grid>
+
         <Box
           w="100%"
           backgroundSize="100%"
@@ -632,13 +532,12 @@ export default function Home() {
         >
           <Heading
             color="brand.500"
-            size="lg"
+            fontSize={{md:33,base:20}}
             mx="auto"
             align={"center"}
-            my={"5"}
-            pb={"10px"}
+            mb={"5"}
           >
-            SERVING TO THE COUNTRIES
+            OUR SERVICES ARE AVAILABLE IN
           </Heading>
         </Box>
         <Box display={"flex"} justifyContent={"center"}>
@@ -663,7 +562,7 @@ export default function Home() {
         >
           <Heading
             color="brand.500"
-            size="lg"
+            fontSize={{md:33,base:22}}
             mx="auto"
             align={"center"}
             my={"5"}
