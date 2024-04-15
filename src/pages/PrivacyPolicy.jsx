@@ -92,7 +92,7 @@ const PrivacyPolicy = () => {
             consumer data
             <br />
             <br />
-            <Text fontWeight={600} fontSize={{ md: "24px", base: "22px" }}>
+            <Text fontWeight={600} fontSize={{ md: "24px", base: "20px" }}>
               How We Use Your Personally Identifiable Information:-
             </Text>
             <br />
@@ -311,7 +311,7 @@ const PrivacyPolicy = () => {
           AVAILABLE AT
         </Heading>
       </Box>
-      <Container maxW={"container.xl"} mb={5} px={20} centerContent>
+      <Container maxW={"container.xl"} mb={5} px={0} centerContent>
         <Image
           src={
             "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/01.jpg"
