@@ -109,7 +109,7 @@ const banner = [
     alt_text: "Image4",
     image: require("../assets/Home Page Banners/04.jpg"),
     display_status: true,
-    image_url: "/products/2445",
+    //image_url: "/products/2445",
   },
 ];
 
