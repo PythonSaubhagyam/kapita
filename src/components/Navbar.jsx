@@ -689,7 +689,7 @@ export default function Navbar() {
                                     setOpenAccrodion();
                                   } else {
                                     navigate(
-                                      `/shop?page=1&category=${section.id}`
+                                      `/shop?page=1&category=${section.id}&category_name=${encodeURIComponent(section?.name)}`
                                     );
                                     setAccordion(!isOpen);
                                     onClose();
@@ -752,7 +752,7 @@ export default function Navbar() {
                                                     setOpen(Open);
                                                   } else {
                                                     navigate(
-                                                      `/shop?page=1&category=${subcategory.id}`
+                                                      `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
                                                     );
                                                     setAccordion(!isOpen);
                                                     onClose();
@@ -770,7 +770,7 @@ export default function Navbar() {
                                                 <AccordionIcon
                                                   onClick={() =>
                                                     navigate(
-                                                      `/shop?page=1&category=${subcategory.id}`
+                                                      `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
                                                     )
                                                   }
                                                   display={
@@ -803,7 +803,7 @@ export default function Navbar() {
                                                           key={i}
                                                           onClick={() => {
                                                             navigate(
-                                                              `/shop?page=1&category=${children.id}`
+                                                              `/shop?page=1&category=${children.id}&category_name=${encodeURIComponent(subcategory?.name)}`
                                                             );
                                                             onClose();
                                                           }}
