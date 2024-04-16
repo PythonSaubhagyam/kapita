@@ -203,42 +203,16 @@ export default function Home() {
           Water is the essential component of any living being to survive. A
           person should drink minimum 2.5 to 3 liters of water every day to keep
           him/her healthy. In simple words, a person must consume 2 to 3 bottles
-          of water every day. You may purchase some plastic bottles from the
-          <br />
-        </Text>
-        <Text
-          color={"text.300"}
-          align={"center"}
-          px={{ base: 15, lg: 20 }}
-          fontSize={{ base: "sm", lg: "lg" }}
-        >
-          nearby shop to store the water and carry with you wherever you go.
-          <br />
-          <br />
-        </Text>
-        <Text
-          color={"text.300"}
-          align={{ base: "justify" }}
-          px={{ base: 15, lg: 20 }}
-          fontSize={{ base: "sm", lg: "lg" }}
-        >
-          Nowadays, we get colorful plastic water bottles. They may help you to
+          of water every day. You may purchase some plastic bottles from the nearby shop to store the water and carry with you wherever you go.Nowadays, we get colorful plastic water bottles. They may help you to
           carry water with you. But, it causes adverse effects on our health. As
           they are made of plastic, they contain chemicals which may turn
           poisonous. So, keeping our health in mind, using a plastic water
-          bottle is not
-        </Text>
-        <Text
-          color={"text.300"}
-          align={"center"}
-          px={{ base: 15, lg: 20 }}
-          fontSize={{ base: "sm", lg: "lg" }}
-        >
-          preferred.
+          bottle is not preferred.
           <br />
-          <br />
+          <br/>
+          
         </Text>
-
+       
         <Link
           fontWeight={700}
           color={"brand.500"}
