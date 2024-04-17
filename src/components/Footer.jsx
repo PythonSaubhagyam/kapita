@@ -277,6 +277,7 @@ export default function Footer() {
                 href={"tel:917405095969"}
                 display={"flex"}
                 flexDirection={"row"}
+                alignItems={"center"}
               >
                 <FaPhoneAlt
                   alignItems={"center"}
@@ -291,7 +292,7 @@ export default function Footer() {
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
                 target="_blank"
-                // alignItems={"center"}
+                alignItems={"center"}
                 href={"mailto:care@suryanorganic.com"}
               >
                 <IoMail
@@ -332,7 +333,7 @@ export default function Footer() {
 
             <Stack align={"flex-start"} gap={"3"} ml={{ lg: 10 }} color="brand.900"> */}
               <ListHeader  marginBottom={5}>
-                We Accepts Payments via
+              We accept payments via
               </ListHeader>
               <Image
               ml={"-15px"}
