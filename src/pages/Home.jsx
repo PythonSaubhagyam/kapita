@@ -249,7 +249,7 @@ export default function Home() {
           }}
           gap={4}
           my={6}
-          px={{ base: 7, md: 15, xl: 20 }}
+          px={{ base: 7, md: 15, xl: "10%" }}
         >
           <GridItem>
             <Image src={require("../assets/Home/V5kf29fiII.jpg")} />
@@ -259,7 +259,7 @@ export default function Home() {
               <Heading fontSize={{md:28,base:24}} color={"brand.500"}>Copper Water Bottle 900 ML</Heading>
               <Text fontSize={"19px"} color="text.300">
                 <span style={{ fontSize: "24px", fontWeight: 600 }}>RS</span> .
-                690.00/-
+                760.00/-
               </Text>
               <Text fontSize={"19px"} color="text.300">
                 {" "}
@@ -277,6 +277,8 @@ export default function Home() {
                 _hover={{ bgColor: "text.500", color: "white" }}
                 color="text.500"
                 variant="outline"
+                onClick={()=>navigate("/products/1645")}
+                cursor={"pointer"}
               >
                 Buy Now
               </Button>
@@ -335,7 +337,7 @@ export default function Home() {
           </GridItem>
           <GridItem cursor={"pointer"}>
             <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
-              <Heading fontSize={{md:"28px",base:24}}color={"text.300"}>
+              <Heading fontSize={{md:"28px",base:24}}color={"text.500"}>
                 History Of Copper Utensils
               </Heading>
               <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
@@ -345,13 +347,16 @@ export default function Home() {
               <Link
                 fontWeight={700}
                 color={"brand.500"}
+                size={"md"}
                 as={RouterLink}
                 to={"/about-us"}
+                textAlign={"center"}
                 w={120}
                 border={"1px"}
                 borderColor={"brand.500"}
-                p={3}
+                p={2}
                 borderRadius={"10px"}
+                _hover={{textDecoration:"none" ,bgColor:"brand.500",color:"#fff"}}
               >
                 Read More
               </Link>
@@ -359,8 +364,8 @@ export default function Home() {
           </GridItem>
           <GridItem>
             <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
-              <Heading fontSize={{md:"28px",base:24}} color={"text.300"}>
-                Environmentally friendly
+              <Heading fontSize={{md:"28px",base:24}} color={"text.500"}>
+                Environmentally Friendly
               </Heading>
               <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
                 Good for you and good for the environment. Join us in the battle
@@ -369,13 +374,16 @@ export default function Home() {
               <Link
                 fontWeight={700}
                 color={"brand.500"}
+                size={"md"}
                 as={RouterLink}
                 to={"/about-us"}
+                textAlign={"center"}
                 w={120}
                 border={"1px"}
                 borderColor={"brand.500"}
-                p={3}
+                p={2}
                 borderRadius={"10px"}
+                _hover={{textDecoration:"none" ,bgColor:"brand.500",color:"#fff"}}
               >
                 Read More
               </Link>
@@ -485,13 +493,35 @@ export default function Home() {
 
           <Stat>
             <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              15+
+              14+
             </StatNumber>
             <StatHelpText color="gray.600">Stores</StatHelpText>
           </Stat>
         </SimpleGrid>
       </Container>
       <Container maxW={{ base: "100vw", md: "container.xl" }} centerContent>
+      <Heading
+            color="brand.500"
+            fontSize={{md:33,base:20}}
+            mx="auto"
+            align={"center"}
+            mt={4}
+            
+          >
+           LICENSES & AFFILIATIONS
+          </Heading>
+          <Flex justify="center" align="center" >
+          <Image
+            src={require("../assets/Home/fssai.png")}
+            boxSize={{md:160,base:130}}
+            alt="Coffee Board"
+            style={{
+              opacity: 1,
+              transition: "opacity 0.7s", // Note the corrected syntax here
+            }}
+          />
+        </Flex>
+        
         <Image
           my={10}
           src={require("../assets/Home/kapita_icon.jpg")}
