@@ -571,7 +571,7 @@ export default function Home() {
         </SimpleGrid>
       </Container>
       <Container maxW={{ base: "100vw", md: "container.xl" }} centerContent>
-      <Heading
+      {/* <Heading
             color="brand.500"
             fontSize={{md:33,base:20}}
             mx="auto"
@@ -580,8 +580,8 @@ export default function Home() {
             
           >
            LICENSES & AFFILIATIONS
-          </Heading>
-          <Flex justify="center" align="center" >
+          </Heading> */}
+          {/* <Flex justify="center" align="center" >
           <Image
             src={require("../assets/Home/fssai.png")}
             boxSize={{md:160,base:130}}
@@ -591,7 +591,7 @@ export default function Home() {
               transition: "opacity 0.7s", // Note the corrected syntax here
             }}
           />
-        </Flex>
+        </Flex> */}
         
         <Image
           my={10}
