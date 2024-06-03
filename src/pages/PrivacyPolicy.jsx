@@ -4,6 +4,8 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
+
 
 const PrivacyPolicy = () => {
   return (
@@ -324,6 +326,7 @@ const PrivacyPolicy = () => {
           }}
         />
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

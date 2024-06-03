@@ -17,7 +17,7 @@ import {
 import { MdWaterDrop } from "react-icons/md";
 import { FaGears } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
-
+import ScrollToTop from "../components/ScrollToTop";
 import ProductListSectionHome from "../components/ProductListSectionHome";
 import {
   Container,
@@ -660,6 +660,7 @@ export default function Home() {
           />
         </Container>
       </Container>
+      <ScrollToTop/>
       <Footer />
       {/* </>
       )} */}
