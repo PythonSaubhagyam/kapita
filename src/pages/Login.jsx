@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import checkLogin from "../utils/checkLogin";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
+import CartEmitter from "../components/EventEmitter";
 
 export default function Login() {
   const [email, setEmail] = useState(null);
@@ -55,6 +56,7 @@ export default function Login() {
               status: "success",
               duration: 2000,
             });
+            CartEmitter.emit("updateProductTotal", true);
             localStorage.setItem("token", response.data.data.token);
             localStorage.setItem(
               "first_name",
@@ -75,6 +77,10 @@ export default function Login() {
             localStorage.setItem(
               "cart_counter",
               response.data.data?.cart_counter
+            );
+            localStorage.setItem(
+              "product_total",
+              response.data.data?.cart_totals?.final_total
             );
             localStorage.setItem(
               "wishlist_counter",
