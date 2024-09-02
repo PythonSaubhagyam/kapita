@@ -190,7 +190,7 @@ export default function ProductDetails() {
   // .replace(/<h3>/g, '<h3 style="color:#436131; font-weight:bold;">')
   // .replace(/<h4>/g, '<h4 style="color:#436131; font-weight:bold;">')
   // .replace(/<h5>/g, '<h5 style="color:#436131; font-weight:bold;">')
-   .replace(/<h6>/g, '<h6 style="color:#2C4C03; font-weight:bold; font-size:18px;">');
+   .replace(/<h6>/g, '<h6 style="color:#A05D26; font-weight:bold; font-size:18px;">');
   async function handleSubmit(e) {
     e.preventDefault();
     try {
