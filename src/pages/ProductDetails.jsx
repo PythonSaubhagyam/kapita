@@ -183,13 +183,14 @@ export default function ProductDetails() {
       });
   }
 
-  // const modifiedDescription = productData && productData.description
+ 
+   const modifiedDescription = productData && productData.description
   // .replace(/<h1>/g, '<h1 style="color:#436131; font-weight:bold;">')
   // .replace(/<h2>/g, '<h2 style="color:#436131; font-weight:bold;">')
   // .replace(/<h3>/g, '<h3 style="color:#436131; font-weight:bold;">')
   // .replace(/<h4>/g, '<h4 style="color:#436131; font-weight:bold;">')
   // .replace(/<h5>/g, '<h5 style="color:#436131; font-weight:bold;">')
-  // .replace(/<h6>/g, '<h6 style="color:#436131; font-weight:bold;">');
+   .replace(/<h6>/g, '<h6 style="color:#2C4C03; font-weight:bold; font-size:18px;">');
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -622,7 +623,7 @@ export default function ProductDetails() {
                   mt={1}
                   dangerouslySetInnerHTML={{
                     // __html: dompurify.sanitize(productData?.description),
-                    __html:productData.description,
+                    __html:modifiedDescription,
                   }}
                 />
               </Skeleton>
