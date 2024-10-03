@@ -6,11 +6,10 @@ import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
 
-
 const PrivacyPolicy = () => {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
- const IsMobileView = searchParams.get("mobile") ?? "false";
+  const IsMobileView = searchParams.get("mobile") ?? "false";
 
   return (
     <>
@@ -38,9 +37,9 @@ const PrivacyPolicy = () => {
             any time. It also explains how you can object to the processing of
             your personal information or to receiving communications about our
             products and services. This Privacy Policy governs only information
-            provided to <b>www.kapita.in</b> It does not govern any other information
-            or communications that may have been collected in any other manner
-            like promotions, personal contact programmer etc.
+            provided to <b>www.kapita.in</b> It does not govern any other
+            information or communications that may have been collected in any
+            other manner like promotions, personal contact programmer etc.
             <br />
             <br />
             By accepting the Privacy Policy, you expressly consent to our use
@@ -52,9 +51,9 @@ const PrivacyPolicy = () => {
               Information We Collect:-
             </Text>
             <br />
-            In general, you can visit the <b>www.kapita.in</b> without telling us who
-            you are or revealing any personally identifiable information. You
-            can however, also register at our website which enables us to
+            In general, you can visit the <b>www.kapita.in</b> without telling
+            us who you are or revealing any personally identifiable information.
+            You can however, also register at our website which enables us to
             contact you by email or text messages on your mobile phone to inform
             you about our products or respond to your comments or queries. As
             part of the registration process, we collect and store your personal
@@ -319,9 +318,7 @@ const PrivacyPolicy = () => {
       </Box>
       <Container maxW={"container.xl"} mb={5} px={0} centerContent>
         <Image
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/01.jpg"
-          }
+          src={require("../assets/001.jpg")}
           w={"container.xl"}
           alt=""
           style={{
@@ -330,7 +327,7 @@ const PrivacyPolicy = () => {
           }}
         />
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>
   );
