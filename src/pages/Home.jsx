@@ -131,7 +131,13 @@ export default function Home() {
   const navigate = useNavigate();
   const [mustTry, setMustTry] = useState([]);
   useEffect(() => {
-    CheckOrSetUDID();
+    const init = async () => {
+      await CheckOrSetUDID();
+       };
+  
+    init();
+  
+    //CheckOrSetUDID();
     //getHomePageData();
     getBlogs();
     getMustTry();
