@@ -275,8 +275,8 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    CheckOrSetUDID();
-    getMegaCategories();
+    //CheckOrSetUDID();
+    //getMegaCategories();
   }, []);
 
   const getMegaCategories = async () => {
@@ -330,7 +330,11 @@ export default function Navbar() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
-    CheckOrSetUDID();
+    const init = async () => {
+      await CheckOrSetUDID();
+       };
+  
+    init();  
     getCategories();
   }, []);
 
@@ -348,6 +352,7 @@ export default function Navbar() {
 
     if (response.data.status === true) {
       setCategories(response.data.categories);
+      setMegaCategories(response.data.categories);
       setTopCategory(mergeArraysById(mainLinks, response.data.categories));
     }
   };
