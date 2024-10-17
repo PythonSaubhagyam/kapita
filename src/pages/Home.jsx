@@ -437,58 +437,6 @@ export default function Home() {
         products={mustTry}
       />
 
-{awardsSection?.length > 0 &&
-        awardsSection[0]?.is_visible_on_website === true && (
-          <Container maxW={{ base: "100vw", md: "container.xl" }}>
-           
-              <Heading
-                color="brand.500"
-                fontSize={{ md: 33, base: 20 }}
-                mx="auto"
-                align={"center"}
-                mt={3}
-                pb={"10px"}
-              >
-                {awardsSection?.length > 0 && awardsSection[0]?.label}
-              </Heading>
-           
-            <Text my={5} textAlign={"center"} color="text.300">
-              We are committed to quality and each of our facilities is
-              independently certified by an industry-accredited agency.
-            </Text>
-            <Flex
-              justifyContent="space-evenly"
-              direction={{ base: "column", md: "row" }}
-              align="center"
-              gap={12}
-              pt={1}
-              pb={6}
-            >
-              <LazyLoadImage
-                src={
-                  awardsSection[0]?.images?.length > 0 &&
-                  awardsSection[0]?.images[0]?.image
-                }
-                alt="global-certificate"
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }}
-              />
-              <LazyLoadImage
-                src={
-                  awardsSection[0]?.images?.length > 0 &&
-                  awardsSection[0]?.images[1]?.image
-                }
-                alt="ciolook-certificate"
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }}
-              />
-            </Flex>
-          </Container>
-        )}
 
       <Container maxW={"container.xl"}>
         <Heading
@@ -560,6 +508,58 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
+{awardsSection?.length > 0 &&
+        awardsSection[0]?.is_visible_on_website === true && (
+          <Container maxW={{ base: "100vw", md: "container.xl" }}>
+           
+              <Heading
+                color="brand.500"
+                fontSize={{ md: 33, base: 20 }}
+                mx="auto"
+                align={"center"}
+                mt={3}
+                pb={"10px"}
+              >
+                {awardsSection?.length > 0 && awardsSection[0]?.label}
+              </Heading>
+           
+            <Text my={5} textAlign={"center"} color="text.300">
+              We are committed to quality and each of our facilities is
+              independently certified by an industry-accredited agency.
+            </Text>
+            <Flex
+              justifyContent="space-evenly"
+              direction={{ base: "column", md: "row" }}
+              align="center"
+              gap={12}
+              pt={1}
+              pb={6}
+            >
+              <LazyLoadImage
+                src={
+                  awardsSection[0]?.images?.length > 0 &&
+                  awardsSection[0]?.images[0]?.image
+                }
+                alt="global-certificate"
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+              <LazyLoadImage
+                src={
+                  awardsSection[0]?.images?.length > 0 &&
+                  awardsSection[0]?.images[1]?.image
+                }
+                alt="ciolook-certificate"
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+            </Flex>
+          </Container>
+        )}
 
       <Container backgroundColor={"bg.500"} maxW={"container.xl"} py={2}>
         <SimpleGrid
