@@ -47,6 +47,8 @@ import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import { useNavigate, NavLink as RouterLink } from "react-router-dom";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
+import LoginModal from "../components/LoginModal";
+import checkLogin from "../utils/checkLogin";
 
 const Diseases = [
   {
@@ -129,6 +131,12 @@ export default function Home() {
   const [awardsSection, setAwardSection] = useState();
   const [servicesSection, setServicesSection] = useState();
   const [availableSection, setAvailableSection] = useState();
+  const loginInfo = checkLogin();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const checkOrSetUDIDInfo = CheckOrSetUDID();
+  const [showPopup, setShowPopup] = useState(
+    sessionStorage.getItem("hasShownPopup")
+  );
   // let [isFull] = useMediaQuery("(max-width:1920px)");
   const [blogs, setBlogs] = useState([]);
   const isMobiles = width <= 768;
@@ -146,6 +154,9 @@ export default function Home() {
     getBlogs();
     getLowerSection();
     getMustTry();
+    if (showPopup === null && !loginInfo.isLoggedIn) {
+      setIsLoginModalOpen(true);
+    }
   }, []);
 
   // async function getHomePageData() {
@@ -698,6 +709,12 @@ export default function Home() {
           </Container>
         )}
       </Container>
+      {!checkLogin().isLoggedIn && (
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
       <ScrollToTop/>
       <Footer />
       {/* </>
