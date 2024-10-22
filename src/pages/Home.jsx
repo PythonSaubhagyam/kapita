@@ -115,10 +115,6 @@ const banner = [
   },
 ];
 
-
-
-
-
 export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
@@ -131,6 +127,12 @@ export default function Home() {
   const [awardsSection, setAwardSection] = useState();
   const [servicesSection, setServicesSection] = useState();
   const [availableSection, setAvailableSection] = useState();
+  const [whyKapitaSection, setWhyKapitaSection] = useState();
+  const [certificateSection, setCertificateSection] = useState();
+  const [mainProductSection, setMainProductSection] = useState();
+  const [smallBannerSection, setSmallBannerSection] = useState();
+  const [nonGMOSection, setNonGMOSection] = useState();
+  const [statisticsSection, setStatisticsSection] = useState([]);
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
@@ -145,28 +147,38 @@ export default function Home() {
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
-       };
-  
+    };
+
     init();
-  
+
     //CheckOrSetUDID();
     //getHomePageData();
+    getBanners();
     getBlogs();
     getLowerSection();
+    getStatisticsSection();
+    getUpperSection();
     getMustTry();
     if (showPopup === null && !loginInfo.isLoggedIn) {
       setIsLoginModalOpen(true);
     }
   }, []);
 
-  // async function getHomePageData() {
-  //   const response = await client.get("/home");
-  //   if (response.data.status === true) {
-  //     setBanners(response.data.banners);
-  //     setHome(response.data);
-  //   }
-  //   setLoading(false);
-  // }
+  async function getBanners() {
+    setLoading(true);
+    try {
+      const response = await client.get("/ecommerce/banners/?sequence=Upper");
+
+      if (response.data.status === true) {
+        setBanners(response?.data?.banner);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching data:", error);
+    }
+  }
   async function getMustTry() {
     const response = await client.get("musttry/list");
     if (response) {
@@ -183,7 +195,7 @@ export default function Home() {
       setBlogs(response.data.blogs);
     }
   }
-  
+
   async function getLowerSection() {
     const params = {};
     const response = await client.get("/lower-section/", {
@@ -191,7 +203,7 @@ export default function Home() {
     });
     if (response.data.status === true) {
       setSections(response.data.data);
-     
+
       const ourServicesSection = response.data.data?.filter(
         (section) => section.id === 2
       );
@@ -201,11 +213,48 @@ export default function Home() {
       const ourAwardsSection = response.data.data?.filter(
         (section) => section.id === 1
       );
-     
+
       setAwardSection(ourAwardsSection);
       setServicesSection(ourServicesSection);
       setAvailableSection(availableAtSection);
-     
+    }
+  }
+
+  async function getStatisticsSection() {
+    const params = {};
+    const response = await client.get("/statistics-section/", {
+      params: params,
+    });
+    if (response.data.status === true) {
+      setStatisticsSection(response?.data?.data);
+    }
+  }
+
+  async function getUpperSection() {
+    const params = {};
+    const response = await client.get("kapita-section/?type=Upper", {
+      params: params,
+    });
+    if (response.data.status === true) {
+      const whyKapita = response.data.data?.filter(
+        (section) => section.id === 1
+      );
+      const certificate = response.data.data?.filter(
+        (section) => section.id === 2
+      );
+      const mainproduct = response.data.data?.filter(
+        (section) => section.id === 3
+      );
+      const smallBanner = response.data.data?.filter(
+        (section) => section.id === 4
+      );
+      const nonGMO = response.data.data?.filter((section) => section.id === 5);
+
+      setWhyKapitaSection(whyKapita);
+      setCertificateSection(certificate);
+      setMainProductSection(mainproduct);
+      setSmallBannerSection(smallBanner);
+      setNonGMOSection(nonGMO);
     }
   }
 
@@ -222,117 +271,143 @@ export default function Home() {
         {loading === true ? (
           <Skeleton h={489}></Skeleton>
         ) : (
-           <Carousel banners={banner} />
-         
+          <Carousel banners={banners?.length > 0 && banners} />
         )}
-       
       </Container>
 
-      <Container maxW={"container.xl"} mb={8}  px={0}>
-        <Text
-          fontSize={{ base: "xl", sm: "2xl", xl: "2xl" }}
-          fontWeight={500}
-          color={"text.500"}
-          bgColor={"bg.500"}
-          textAlign={{ base: "center", md: "start" }}
-          px={{ base: 2, md: 8 }}
-          py={4}
-          //my={3}
-        >
-          WHY KAPITA ?
-        </Text>
-        <Text
-          color={"text.300"}
-          align={{ base: "justify" }}
-          px={{ base: 15, lg: 20 }}
-          fontSize={{ base: "sm", lg: "lg" }}
-        >
-          Water is the essential component of any living being to survive. A
-          person should drink minimum 2.5 to 3 liters of water every day to keep
-          him/her healthy. In simple words, a person must consume 2 to 3 bottles
-          of water every day. You may purchase some plastic bottles from the nearby shop to store the water and carry with you wherever you go.Nowadays, we get colorful plastic water bottles. They may help you to
-          carry water with you. But, it causes adverse effects on our health. As
-          they are made of plastic, they contain chemicals which may turn
-          poisonous. So, keeping our health in mind, using a plastic water
-          bottle is not preferred.
-          <br />
-          <br/>
-          
-        </Text>
-       
-        <Link
-          fontWeight={700}
-          color={"brand.500"}
-          as={RouterLink}
-          to={"/about-us"}
-          mx={{lg:"45%",base:"33%",md:"42%"}}
-          border={"1px"}
-          borderColor={"brand.500"}
-          p={3}
-          borderRadius={"10px"}
-          _hover={{
-            textDecoration: "none",
-            color: "white",
-            bgColor: "text.500",
-          }}
-        >
-          Read more
-        </Link>
-      </Container>
+      {whyKapitaSection?.length > 0 &&
+        whyKapitaSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"container.xl"} mb={8} px={0}>
+            <Text
+              fontSize={{ base: "xl", sm: "2xl", xl: "2xl" }}
+              fontWeight={500}
+              color={"text.500"}
+              bgColor={"bg.500"}
+              textAlign={{ base: "center", md: "start" }}
+              px={{ base: 2, md: 8 }}
+              py={4}
+              //my={3}
+            >
+              {whyKapitaSection[0]?.label}
+            </Text>
+            <Text
+              color={"text.300"}
+              mt={2}
+              align={{ base: "justify" }}
+              px={{ base: 15, lg: 20 }}
+              fontSize={{ base: "sm", lg: "lg" }}
+              whiteSpace={"pre-line"}
+            >
+              {whyKapitaSection[0]?.description}
+              <br />
+              <br />
+            </Text>
 
-      <Container mb={5} px={0} maxW={"container.xl"} centerContent>
-        <Image
-          src={require("../assets/Home/Kapita_certificate.jpg")}
-          alt=""
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
-        />
-        <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-          }}
-          gap={4}
-          my={6}
-          px={{ base: 7, md: 15, xl: "10%" }}
-        >
-          <GridItem>
-            <Image src={require("../assets/Home/V5kf29fiII.jpg")} />
-          </GridItem>
-          <GridItem>
-            <Flex flexDirection={"column"} gap={4} px={{md:10}} pt={{md:20}}>
-              <Heading fontSize={{md:28,base:24}} color={"brand.500"}>Copper Water Bottle 900 ML</Heading>
-              <Text fontSize={"19px"} color="text.300">
-                <span style={{ fontSize: "24px", fontWeight: 600 }}>RS</span> .
-                760.00/-
-              </Text>
-              <Text fontSize={"19px"} color="text.300">
-                {" "}
-                Quality
-              </Text>
-              <Flex alignItems={"center"}>
-                {[0, 1, 2, 3].map(() => (
-                  <FaHeart style={{ marginRight: 3 }} />
-                ))}
-                <CiHeart fontSize={"22px"} />
-              </Flex>
-              <Button
-                borderColor={"text.500"}
-                w={150}
-                _hover={{ bgColor: "text.500", color: "white" }}
-                color="text.500"
-                variant="outline"
-                onClick={()=>navigate("/products/1645")}
-                cursor={"pointer"}
-              >
-                Buy Now
-              </Button>
-            </Flex>
-          </GridItem>
-        </Grid>
-      </Container>
+            <Link
+              fontWeight={700}
+              color={"brand.500"}
+              as={RouterLink}
+              to={"/about-us"}
+              mx={{ lg: "45%", base: "33%", md: "42%" }}
+              border={"1px"}
+              borderColor={"brand.500"}
+              p={3}
+              borderRadius={"10px"}
+              _hover={{
+                textDecoration: "none",
+                color: "white",
+                bgColor: "text.500",
+              }}
+            >
+              Read more
+            </Link>
+          </Container>
+        )}
+
+      {certificateSection?.length > 0 &&
+        certificateSection[0]?.is_visible_on_website === true && (
+          <Container mb={5} px={0} maxW={"container.xl"} centerContent>
+            <Image
+              src={certificateSection[0]?.image}
+              alt=""
+              style={{
+                opacity: 1,
+                transition: "opacity 0.7s", // Note the corrected syntax here
+              }}
+            />
+          </Container>
+        )}
+      {mainProductSection?.length > 0 &&
+        mainProductSection[0]?.is_visible_on_website === true && (
+          <Container mb={5} px={0} maxW={"container.xl"} centerContent>
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+              }}
+              gap={4}
+              my={6}
+              px={{ base: 7, md: 15, xl: "10%" }}
+            >
+              <GridItem>
+                <Image
+                  src={
+                    mainProductSection[0]?.images?.length > 0 &&
+                    mainProductSection[0]?.images[0]?.image
+                  }
+                />
+              </GridItem>
+              <GridItem>
+                <Flex
+                  flexDirection={"column"}
+                  gap={4}
+                  px={{ md: 10 }}
+                  pt={{ md: 20 }}
+                >
+                  <Heading
+                    fontSize={{ md: 28, base: 24 }}
+                    color={"brand.500"}
+                    lineHeight={10}
+                  >
+                    {mainProductSection[0]?.images?.length > 0 &&
+                      mainProductSection[0]?.images[0]?.product_name}
+                  </Heading>
+                  <Text fontSize={"19px"} color="text.300">
+                    <span style={{ fontSize: "24px", fontWeight: 600 }}>
+                      RS
+                    </span>{" "}
+                    . 760.00/-
+                  </Text>
+                  <Text fontSize={"19px"} color="text.300">
+                    {" "}
+                    Quality
+                  </Text>
+                  <Flex alignItems={"center"}>
+                    {[0, 1, 2, 3].map(() => (
+                      <FaHeart style={{ marginRight: 3 }} />
+                    ))}
+                    <CiHeart fontSize={"22px"} />
+                  </Flex>
+                  <Button
+                    borderColor={"text.500"}
+                    w={150}
+                    _hover={{ bgColor: "text.500", color: "white" }}
+                    color="text.500"
+                    variant="outline"
+                    onClick={() =>
+                      navigate(
+                        `/products/${mainProductSection[0]?.images[0]?.product}`
+                      )
+                    }
+                    cursor={"pointer"}
+                  >
+                    Buy Now
+                  </Button>
+                </Flex>
+              </GridItem>
+            </Grid>
+          </Container>
+        )}
 
       <Container maxW={"container.xl"} mb={5} px={0}>
         <Box
@@ -370,77 +445,114 @@ export default function Home() {
             </GridItem>
           ))}
         </Grid>
-        <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-          }}
-          gap={4}
-          my={6}
-          px={{ base: 7, md: 15, xl: "10%" }}
-        >
-          <GridItem>
-            <Image src={require("../assets/Home/HZSIirCVHj.jpg")} />
-          </GridItem>
-          <GridItem cursor={"pointer"}>
-            <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
-              <Heading fontSize={{md:"28px",base:24}}color={"text.500"}>
-                History Of Copper Utensils
-              </Heading>
-              <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
-                Scientifically proven to be effective . Copper utensils were
-                used as tradition in our country from hundreds of years.
-              </Text>
-              <Link
-                fontWeight={700}
-                color={"brand.500"}
-                size={"md"}
-                as={RouterLink}
-                to={"/about-us"}
-                textAlign={"center"}
-                w={120}
-                border={"1px"}
-                borderColor={"brand.500"}
-                p={2}
-                borderRadius={"10px"}
-                _hover={{textDecoration:"none" ,bgColor:"brand.500",color:"#fff"}}
-              >
-                Read More
-              </Link>
-            </Flex>
-          </GridItem>
-          <GridItem>
-            <Flex flexDirection={"column"} gap={6} my={{md:"20%"}}>
-              <Heading fontSize={{md:"28px",base:24}} color={"text.500"}>
-                Environmentally Friendly
-              </Heading>
-              <Text color={"text.300"} fontSize={"19px"} textAlign={"justify"}>
-                Good for you and good for the environment. Join us in the battle
-                against plastic.
-              </Text>
-              <Link
-                fontWeight={700}
-                color={"brand.500"}
-                size={"md"}
-                as={RouterLink}
-                to={"/about-us"}
-                textAlign={"center"}
-                w={120}
-                border={"1px"}
-                borderColor={"brand.500"}
-                p={2}
-                borderRadius={"10px"}
-                _hover={{textDecoration:"none" ,bgColor:"brand.500",color:"#fff"}}
-              >
-                Read More
-              </Link>
-            </Flex>
-          </GridItem>
-          <GridItem cursor={"pointer"}>
-            <Image src={require("../assets/Home/gFADb6goeQ.jpg")} />
-          </GridItem>
-        </Grid>
       </Container>
+      {smallBannerSection?.length > 0 &&
+        smallBannerSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"container.xl"} mb={5} px={0}>
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+              }}
+              gap={4}
+              my={6}
+              px={{ base: 7, md: 15, xl: "10%" }}
+            >
+              <GridItem>
+                <Image
+                  src={
+                    smallBannerSection[0]?.images?.length > 0 &&
+                    smallBannerSection[0]?.images[0]?.image
+                  }
+                />
+              </GridItem>
+              <GridItem cursor={"pointer"}>
+                <Flex flexDirection={"column"} gap={6} my={{ md: "20%" }}>
+                  <Heading
+                    fontSize={{ md: "28px", base: 24 }}
+                    color={"text.500"}
+                  >
+                    History Of Copper Utensils
+                  </Heading>
+                  <Text
+                    color={"text.300"}
+                    fontSize={"19px"}
+                    textAlign={"justify"}
+                  >
+                    {smallBannerSection[0]?.images?.length > 0 &&
+                      smallBannerSection[0]?.images[0]?.description}
+                  </Text>
+                  <Link
+                    fontWeight={700}
+                    color={"brand.500"}
+                    size={"md"}
+                    as={RouterLink}
+                    to={"/about-us"}
+                    textAlign={"center"}
+                    w={120}
+                    border={"1px"}
+                    borderColor={"brand.500"}
+                    p={2}
+                    borderRadius={"10px"}
+                    _hover={{
+                      textDecoration: "none",
+                      bgColor: "brand.500",
+                      color: "#fff",
+                    }}
+                  >
+                    Read More
+                  </Link>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex flexDirection={"column"} gap={6} my={{ md: "20%" }}>
+                  <Heading
+                    fontSize={{ md: "28px", base: 24 }}
+                    color={"text.500"}
+                  >
+                    Environmentally Friendly
+                  </Heading>
+                  <Text
+                    color={"text.300"}
+                    fontSize={"19px"}
+                    textAlign={"justify"}
+                  >
+                    {smallBannerSection[0]?.images?.length > 0 &&
+                      smallBannerSection[0]?.images[1]?.description}
+                  </Text>
+                  <Link
+                    fontWeight={700}
+                    color={"brand.500"}
+                    size={"md"}
+                    as={RouterLink}
+                    to={"/about-us"}
+                    textAlign={"center"}
+                    w={120}
+                    border={"1px"}
+                    borderColor={"brand.500"}
+                    p={2}
+                    borderRadius={"10px"}
+                    _hover={{
+                      textDecoration: "none",
+                      bgColor: "brand.500",
+                      color: "#fff",
+                    }}
+                  >
+                    Read More
+                  </Link>
+                </Flex>
+              </GridItem>
+              <GridItem cursor={"pointer"}>
+                <Image
+                  src={
+                    smallBannerSection[0]?.images?.length > 0 &&
+                    smallBannerSection[0]?.images[1]?.image
+                  }
+                />
+              </GridItem>
+            </Grid>
+          </Container>
+        )}
 
       <ProductListSectionHome
         title="Must Try : KAPITA Products"
@@ -448,16 +560,8 @@ export default function Home() {
         products={mustTry}
       />
 
-
       <Container maxW={"container.xl"}>
-        <Heading
-          color="brand.500"
-          size="lg"
-          mx="auto"
-          align={"center"}
-          mt={3}
-         
-        >
+        <Heading color="brand.500" size="lg" mx="auto" align={"center"} mt={3}>
           BLOGS
         </Heading>
 
@@ -519,21 +623,20 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
-{awardsSection?.length > 0 &&
+      {awardsSection?.length > 0 &&
         awardsSection[0]?.is_visible_on_website === true && (
           <Container maxW={{ base: "100vw", md: "container.xl" }}>
-           
-              <Heading
-                color="brand.500"
-                fontSize={{ md: 33, base: 20 }}
-                mx="auto"
-                align={"center"}
-                mt={3}
-                pb={"10px"}
-              >
-                {awardsSection?.length > 0 && awardsSection[0]?.label}
-              </Heading>
-           
+            <Heading
+              color="brand.500"
+              fontSize={{ md: 33, base: 20 }}
+              mx="auto"
+              align={"center"}
+              mt={3}
+              pb={"10px"}
+            >
+              {awardsSection?.length > 0 && awardsSection[0]?.label}
+            </Heading>
+
             <Text my={5} textAlign={"center"} color="text.300">
               We are committed to quality and each of our facilities is
               independently certified by an industry-accredited agency.
@@ -572,54 +675,32 @@ export default function Home() {
           </Container>
         )}
 
-      <Container backgroundColor={"bg.500"} maxW={"container.xl"} py={2}>
-        <SimpleGrid
-          columns={[2, 3, null, 5]}
-          px={6}
-          maxW={"container.xl"}
-          my={6}
-          backgroundColor={"bg.500"}
-          align="center"
-          spacingX={{ base: "10vw", md: "30px" }}
-          spacingY="40px"
-        >
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              9+
-            </StatNumber>
-            <StatHelpText color="gray.600">Natural Products</StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              13125+
-            </StatNumber>
-            <StatHelpText color="gray.600">Satisfied Clients</StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              1485+
-            </StatNumber>
-            <StatHelpText color="gray.600">Cities & Towns</StatHelpText>
-          </Stat>
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              7+
-            </StatNumber>
-            <StatHelpText color="gray.600">Countries</StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              14+
-            </StatNumber>
-            <StatHelpText color="gray.600">Stores</StatHelpText>
-          </Stat>
-        </SimpleGrid>
-      </Container>
+      {statisticsSection?.length > 0 && (
+        <Container backgroundColor={"bg.500"} maxW={"container.xl"} py={2}>
+          <SimpleGrid
+            columns={[2, 3, null, 5]}
+            px={6}
+            maxW={"container.xl"}
+            my={6}
+            backgroundColor={"bg.500"}
+            align="center"
+            spacingX={{ base: "10vw", md: "30px" }}
+            spacingY="40px"
+          >
+            {statisticsSection?.length > 0 &&
+              statisticsSection?.map((data) => (
+                <Stat>
+                  <StatNumber fontSize={{ base: "3xl", md: "3xl" }}>
+                    {data?.value}
+                  </StatNumber>
+                  <StatHelpText color="gray.600">{data?.name}</StatHelpText>
+                </Stat>
+              ))}
+          </SimpleGrid>
+        </Container>
+      )}
       <Container maxW={{ base: "100vw", md: "container.xl" }} centerContent>
-      {/* <Heading
+        {/* <Heading
             color="brand.500"
             fontSize={{md:33,base:20}}
             mx="auto"
@@ -629,7 +710,7 @@ export default function Home() {
           >
            LICENSES & AFFILIATIONS
           </Heading> */}
-          {/* <Flex justify="center" align="center" >
+        {/* <Flex justify="center" align="center" >
           <Image
             src={require("../assets/Home/fssai.png")}
             boxSize={{md:160,base:130}}
@@ -640,17 +721,19 @@ export default function Home() {
             }}
           />
         </Flex> */}
-        
-        <Image
-          my={10}
-          src={require("../assets/Home/kapita_icon.jpg")}
-          w={{ md: "65%" }}
-        />
-
-{servicesSection?.length > 0 &&
-        servicesSection[0]?.is_visible_on_website === true && (
-          <Container maxW={{ base: "100vw", md: "container.xl" }}>
-           
+        {nonGMOSection?.length > 0 &&
+          nonGMOSection[0]?.is_visible_on_website === true && (
+            <Container maxW={"container.xl"} centerContent>
+              <Image
+                my={10}
+                src={nonGMOSection[0]?.image}
+                w={{ md: "65%" }}
+              />
+            </Container>
+          )}
+        {servicesSection?.length > 0 &&
+          servicesSection[0]?.is_visible_on_website === true && (
+            <Container maxW={{ base: "100vw", md: "container.xl" }}>
               <Heading
                 color="brand.500"
                 fontSize={{ md: 33, base: 20 }}
@@ -661,28 +744,27 @@ export default function Home() {
               >
                 {servicesSection?.length > 0 && servicesSection[0].label}
               </Heading>
-           
-            <Box display={"flex"} justifyContent={"center"}>
-              <LazyLoadImage
-                src={
-                  servicesSection?.length > 0 &&
-                  servicesSection[0]?.images[0].image
-                }
-                w={{ base: "100%", md: "100%" }}
-                alt=""
-                py={4}
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }}
-              />
-            </Box>
-          </Container>
-        )}
+
+              <Box display={"flex"} justifyContent={"center"}>
+                <LazyLoadImage
+                  src={
+                    servicesSection?.length > 0 &&
+                    servicesSection[0]?.images[0].image
+                  }
+                  w={{ base: "100%", md: "100%" }}
+                  alt=""
+                  py={4}
+                  style={{
+                    opacity: 1,
+                    transition: "opacity 0.7s", // Note the corrected syntax here
+                  }}
+                />
+              </Box>
+            </Container>
+          )}
         {availableSection?.length > 0 &&
-        availableSection[0]?.is_visible_on_website === true && (
-          <Container maxW={"container.xl"} mb={5} px={0} centerContent>
-            
+          availableSection[0]?.is_visible_on_website === true && (
+            <Container maxW={"container.xl"} mb={5} px={0} centerContent>
               <Heading
                 color="brand.500"
                 fontSize={{ md: 33, base: 22 }}
@@ -693,21 +775,21 @@ export default function Home() {
               >
                 {availableSection?.length > 0 && availableSection[0].label}
               </Heading>
-            
-            <Image
-              src={
-                availableSection?.length > 0 &&
-                availableSection[0]?.images[0].image
-              }
-              w={"container.xl"}
-              alt=""
-              style={{
-                opacity: 1,
-                transition: "opacity 0.7s", // Note the corrected syntax here
-              }}
-            />
-          </Container>
-        )}
+
+              <Image
+                src={
+                  availableSection?.length > 0 &&
+                  availableSection[0]?.images[0].image
+                }
+                w={"container.xl"}
+                alt=""
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+            </Container>
+          )}
       </Container>
       {!checkLogin().isLoggedIn && (
         <LoginModal
@@ -715,7 +797,7 @@ export default function Home() {
           onClose={() => setIsLoginModalOpen(false)}
         />
       )}
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
       {/* </>
       )} */}

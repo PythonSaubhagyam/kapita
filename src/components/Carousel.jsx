@@ -153,11 +153,12 @@ export default function Carousel({
               ) : (
                 <Image
                   cursor={
-                    bannerData?.category_id !== null ||
-                    bannerData?.product_id !== null
-                      ? "pointer"
-                      : ""
+                    bannerData?.category_id === null &&
+                    bannerData?.product_id === null
+                      ? ""
+                      : "pointer"
                   }
+                  key={index}
                   src={bannerData.image}
                   alt={bannerData.alt_text}
                   onClick={() => {
@@ -166,9 +167,7 @@ export default function Carousel({
                       bannerData?.product_id !== null
                     ) {
                       if (bannerData?.category_id !== null) {
-                        navigate(
-                          `/shop?page=1&category=${bannerData?.category_id}`
-                        );
+                        navigate(`/shop?page=1&category=${bannerData?.category_id}`);
                       } else {
                         navigate(`/products/${bannerData?.product_id}`);
                       }
@@ -176,7 +175,9 @@ export default function Carousel({
                   }}
                   objectFit="fit"
                   w="100%"
-                />
+                  // h="60%"
+                  // h={{ base: "100%", md: `${desktopHeight}px` }}
+                ></Image>
               )}
             </div>
           ))}
