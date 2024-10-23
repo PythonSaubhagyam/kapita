@@ -78,22 +78,7 @@ const CartPopUp = () => {
         px={1}
         display={location.pathname === "/cart" ? "none" : "flex"}
       >
-        {isEliteMember ? (
-          <Box
-            bgColor={"brand.500"}
-            color={"#fff"}
-            textAlign={"center"}
-            py={3}
-            fontWeight={400}
-            borderTopRightRadius={"20px"}
-            borderTopLeftRadius={"20px"}
-            w={{ md: 600, base: "100%" }}
-            opacity={0.9}
-            fontSize={13}
-          >
-            Thank you for being a SOSE Elite member! Enjoy your complimentary delivery and exclusive benefits.
-          </Box>
-        ) : (
+        {!isEliteMember && (
           <Box
             bgColor={"brand.500"}
             color={"#fff"}
@@ -112,6 +97,20 @@ const CartPopUp = () => {
             </Link>{" "}
             now for complimentary delivery and elevate your shopping experience!
           </Box>
+        )}
+        {isEliteMember && (
+          <Box
+            bgColor={"brand.500"}
+            color={"#fff"}
+            textAlign={"center"}
+            py={3}
+            fontWeight={400}
+            borderTopRightRadius={"20px"}
+            borderTopLeftRadius={"20px"}
+            w={{ md: 600, base: "100%" }}
+            opacity={0.9}
+            fontSize={13}
+          ></Box>
         )}
         <Flex
           justifyContent={"space-between"}
