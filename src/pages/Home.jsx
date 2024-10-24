@@ -333,6 +333,7 @@ export default function Home() {
               style={{
                 opacity: 1,
                 transition: "opacity 0.7s", // Note the corrected syntax here
+                width:"100%"
               }}
             />
           </Container>
@@ -554,11 +555,12 @@ export default function Home() {
           </Container>
         )}
 
-      <ProductListSectionHome
+     {mustTry?.length > 0 && <ProductListSectionHome
         title="Must Try : KAPITA Products"
         loading={loading}
         products={mustTry}
-      />
+        type={isMobile && "carousal"}
+      />}
 
       <Container maxW={"container.xl"}>
         <Heading color="brand.500" size="lg" mx="auto" align={"center"} mt={3}>
