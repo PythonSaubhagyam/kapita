@@ -63,7 +63,7 @@ const Posts = [
         of trusted and ethically growing natural farmers
       </Text>
     ),
-    href: "https://www.sidhakisanse.com/",
+    href: "https://www.sidhakisanse.in/",
   },
   {
     image: require("../assets/Inspire & Support/b3.jpg"),
@@ -95,8 +95,8 @@ export default function InspireSupport() {
           secondUrl={"/inspire-and-support"}
         />{" "}
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0}>
-        <Image src={require("../assets/Inspire & Support/inspire.jpg")} />
+      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
+        <Image src={require("../assets/Inspire & Support/inspire.jpg")}  width="100%"/>
       </Container>
       <Container maxW={"6xl"} py={2}>
         {Posts.map((postDetails) => (
