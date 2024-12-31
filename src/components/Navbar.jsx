@@ -65,7 +65,7 @@ import { FaApple, FaFacebookF, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { debounce } from "lodash";
 import CartEmitter from "./EventEmitter";
-import LoginModal from "./LoginModal"
+import LoginModal from "./LoginModal";
 
 const Links = [
   {
@@ -334,9 +334,9 @@ export default function Navbar() {
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
-       };
-  
-    init();  
+    };
+
+    init();
     getCategories();
   }, []);
 
@@ -432,7 +432,7 @@ export default function Navbar() {
   const Logout = () => {
     localStorage.clear();
     CartEmitter.emit("updateCartCount", 0);
-    CartEmitter.emit("updateProductTotal",0);
+    CartEmitter.emit("updateProductTotal", 0);
     toast({
       title: "Logged out successfully!",
       status: "success",
@@ -603,7 +603,7 @@ export default function Navbar() {
                     _hover={{ bg: "brand.500" }}
                   > */}
                   <MenuItem
-                    onClick={()=>setIsLoginModalOpen(true)}
+                    onClick={() => setIsLoginModalOpen(true)}
                     cursor={"pointer"}
                     _hover={{ textDecoration: "none" }}
                   >
@@ -706,7 +706,11 @@ export default function Navbar() {
                                     setOpenAccrodion();
                                   } else {
                                     navigate(
-                                      `/shop?page=1&category=${section.id}&category_name=${encodeURIComponent(section?.name)}`
+                                      `/shop?page=1&category=${
+                                        section.id
+                                      }&category_name=${encodeURIComponent(
+                                        section?.name
+                                      )}`
                                     );
                                     setAccordion(!isOpen);
                                     onClose();
@@ -769,7 +773,11 @@ export default function Navbar() {
                                                     setOpen(Open);
                                                   } else {
                                                     navigate(
-                                                      `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
+                                                      `/shop?page=1&category=${
+                                                        subcategory.id
+                                                      }&category_name=${encodeURIComponent(
+                                                        subcategory?.name
+                                                      )}`
                                                     );
                                                     setAccordion(!isOpen);
                                                     onClose();
@@ -787,7 +795,11 @@ export default function Navbar() {
                                                 <AccordionIcon
                                                   onClick={() =>
                                                     navigate(
-                                                      `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
+                                                      `/shop?page=1&category=${
+                                                        subcategory.id
+                                                      }&category_name=${encodeURIComponent(
+                                                        subcategory?.name
+                                                      )}`
                                                     )
                                                   }
                                                   display={
@@ -820,7 +832,11 @@ export default function Navbar() {
                                                           key={i}
                                                           onClick={() => {
                                                             navigate(
-                                                              `/shop?page=1&category=${children.id}&category_name=${encodeURIComponent(subcategory?.name)}`
+                                                              `/shop?page=1&category=${
+                                                                children.id
+                                                              }&category_name=${encodeURIComponent(
+                                                                subcategory?.name
+                                                              )}`
                                                             );
                                                             onClose();
                                                           }}
@@ -1145,13 +1161,13 @@ export default function Navbar() {
                     {megaCategories?.map((section, index) => (
                       <>
                         <MenuItem
-                          icon={
-                            <img
-                              src={"./himalayan_logo.jpg"}
-                              width={25}
-                              alt=""
-                            />
-                          }
+                          // icon={
+                          //   <img
+                          //     src={"./himalayan_logo.jpg"}
+                          //     width={25}
+                          //     alt=""
+                          //   />
+                          // }
                           fontSize={"13"}
                           key={index}
                           onMouseEnter={() => handleShow1(section.children)}
