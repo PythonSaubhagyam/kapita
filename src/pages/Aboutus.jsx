@@ -4,13 +4,19 @@ import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 const Aboutus = () => {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
+
+  const pageUrl = "/about-us";
+
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       {IsMobileView !== "true" && <Navbar />}
       <Container maxW={"container.xl"} alignContent={"flex-start"}>
         <BreadCrumbCom second={"About Us"} secondUrl={"/about-us"} />{" "}

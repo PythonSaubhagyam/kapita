@@ -11,10 +11,15 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 const Appreciation = () => {
+  const pageUrl = "/appreciation";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
+
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Appreciation"} secondUrl={"/appreciation"} />

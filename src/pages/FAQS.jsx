@@ -5,6 +5,7 @@ import { Container, Box, Text,Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function FAQS() {
   let { search } = useLocation();
@@ -191,9 +192,12 @@ export default function FAQS() {
         'Please email the details of the order you wish to put to organic@suryan.in with the subject line "Bulk order."',
     },
   ];
+  const pageUrl = "/faq";
 
   return (
-    <>
+    <>      
+    <MetaTags pageUrl={pageUrl} />
+
        {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"FAQ"} secondUrl={"/faq"} />

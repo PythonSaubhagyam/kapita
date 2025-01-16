@@ -33,6 +33,7 @@ import {
 } from "@ajna/pagination";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
@@ -110,9 +111,11 @@ export default function BlogList() {
       </option>
     ));
   }
+  const pageUrl = "/blogs";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
 
       <Container maxW="container.xl">

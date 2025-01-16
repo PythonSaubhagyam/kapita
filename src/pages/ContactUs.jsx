@@ -21,6 +21,7 @@ import { AsyncSelect } from "chakra-react-select";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function ContactUs() {
   let { search } = useLocation();
@@ -128,8 +129,12 @@ export default function ContactUs() {
     }
     return Options;
   };
+  const pageUrl = "/contact-us";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
+
        {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Contact Us"} secondUrl={"/contact-us"} />

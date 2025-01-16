@@ -13,14 +13,18 @@ import {
 import { useLocation } from "react-router-dom";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function ReturnRefundPolicy() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
+  const pageUrl = "/return-and-refund-policy";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
+
       {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom

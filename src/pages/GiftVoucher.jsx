@@ -26,6 +26,7 @@ import { AiFillGift } from "react-icons/ai";
 import checkLogin from "../utils/checkLogin";
 import Loader from "../components/Loader";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 export default function GiftVoucher() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -160,8 +161,12 @@ export default function GiftVoucher() {
     // setFormData();
     setLoading(false);
   };
+  const pageUrl = "/gift-voucher";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
+
       {IsMobileView !== "true" && <Navbar />}
       <Card m={3}>
         <CardBody>

@@ -30,11 +30,12 @@ import { FaStreetView } from "react-icons/fa";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 export default function StoreLocator() {
-  
+
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
- const IsMobileView = searchParams.get("mobile") ?? "false";
+  const IsMobileView = searchParams.get("mobile") ?? "false";
 
   const [storeData, setStoreData] = useState([]);
   const [cities, setCities] = useState([]);
@@ -61,10 +62,13 @@ export default function StoreLocator() {
     const hour = +hourString % 24;
     return (hour % 12 || 12) + ":" + minute + (hour < 12 ? " AM" : " PM");
   }
+  const pageUrl = "/store-locator";
 
   return (
     <>
-       {IsMobileView !== "true" && <Navbar />}
+      <MetaTags pageUrl={pageUrl} />
+
+      {IsMobileView !== "true" && <Navbar />}
 
       <Container maxW="container.xl" alignContent={"flex-start"}>
         <BreadCrumbCom second={"Store Locator"} secondUrl={"/store-locator"} />
@@ -85,7 +89,7 @@ export default function StoreLocator() {
           transform="translate(-50%, -50%)"
           zIndex="1"
           textShadow={"0px 0px 100px lightgreen"}
-          // Optional: Add background to improve text readability
+        // Optional: Add background to improve text readability
         >
           Store Locator
         </Text>
@@ -127,8 +131,8 @@ export default function StoreLocator() {
                 // direction={{ base: "column-reverse", lg: "row" }}
                 justify="space-between"
                 align="flex-start"
-                // gap={{ base: 4, lg: 0 }}
-                // centerContent={{ base: true, lg: false }}
+              // gap={{ base: 4, lg: 0 }}
+              // centerContent={{ base: true, lg: false }}
               >
                 <Box
                   maxW={"6xl"}
@@ -142,7 +146,7 @@ export default function StoreLocator() {
                   bg="white"
                   py={4}
                   top={0}
-                  // zIndex={999}
+                // zIndex={999}
                 >
                   <Box border="1px" borderRadius={"md"} maxW={"6xl"} mx="auto">
                     <Button onClick={onToggle} maxW={"6xl"}>
@@ -228,7 +232,7 @@ export default function StoreLocator() {
                                 >
                                   <Image
                                     minW={{
-                                      
+
                                       sm: "300px",
                                       lg: "360px",
                                     }}
@@ -256,26 +260,23 @@ export default function StoreLocator() {
                                             {item.landmark}
                                           </Text>
                                           <Text fontSize={"sm"}>
-                                            {`${
-                                              item.address_line_1
-                                                ? item.address_line_1 + ", "
-                                                : ""
-                                            }
+                                            {`${item.address_line_1
+                                              ? item.address_line_1 + ", "
+                                              : ""
+                                              }
                                 
                                 ${item.landmark ? item.landmark + ", " : ""}
                                 `}
                                             <br />
-                                            {`${
-                                              item.address_line_2
-                                                ? item.address_line_2 + ", "
-                                                : ""
-                                            } 
+                                            {`${item.address_line_2
+                                              ? item.address_line_2 + ", "
+                                              : ""
+                                              } 
                                 ${item.state_obj ? item.state_obj.name : ""}
-                                ${
-                                  item.postal_code
-                                    ? " - " + item.postal_code
-                                    : ""
-                                }`}
+                                ${item.postal_code
+                                                ? " - " + item.postal_code
+                                                : ""
+                                              }`}
                                           </Text>
                                         </Box>
                                       </Flex>
@@ -317,7 +318,7 @@ export default function StoreLocator() {
                                         >
                                           <Icon
                                             as={BsFillTelephoneFill}
-                                            // color="brand.500"
+                                          // color="brand.500"
                                           />
                                           {item.mobile_no}
                                         </Flex>
@@ -335,7 +336,7 @@ export default function StoreLocator() {
                                         >
                                           <Icon
                                             as={AiFillMail}
-                                            // color="brand.500"
+                                          // color="brand.500"
                                           />
                                           {item.email}
                                         </Flex>
@@ -391,7 +392,7 @@ export default function StoreLocator() {
           {/* </Container> */}
         </Flex>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
 
     </>

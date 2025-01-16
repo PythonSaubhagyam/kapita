@@ -14,6 +14,7 @@ import Carousel from "../components/Carousel";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function OrganicLiving() {
     let { search } = useLocation();
@@ -50,9 +51,13 @@ export default function OrganicLiving() {
 
     const width = useBreakpointValue({ base: "100%", lg: "1200" });
     const height = useBreakpointValue({ base: "300", lg: "600" });
+    const pageUrl = "/organic-living";
+
 
     return (
         <>
+        <MetaTags pageUrl={pageUrl} />
+
             {IsMobileView !== "true" && <Navbar />}
 
             <Container maxW={"container.xl"} alignContent={"flex-start"}>

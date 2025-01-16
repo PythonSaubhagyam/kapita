@@ -36,6 +36,7 @@ import axios from "axios";
 import { BsPatchCheckFill } from "react-icons/bs";
 import Loader from "../components/Loader";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 
 export default function CustomerProfile() {
@@ -216,9 +217,12 @@ export default function CustomerProfile() {
       state: { details: details },
     });
   }
+  const pageUrl = "/profile";
 
   return (
     <>
+          <MetaTags pageUrl={pageUrl} />
+
       <Navbar />
       <Container maxW={"container.lg"} py={12}>
         <Tabs isLazy>
