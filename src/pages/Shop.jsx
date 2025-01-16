@@ -36,6 +36,9 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import { Select } from "chakra-react-select";
 import CapitalizeLetter from "../utils/CommanFunction";
 
+//redux
+import { fetchFilters } from "../redux/slices/shopApi";
+import { useDispatch, useSelector } from "react-redux";
 // import Paginator from "../components/Paginator";
 
 export default function Shop() {
@@ -46,10 +49,11 @@ export default function Shop() {
   const [filteredData, setFilteredData] = useState([]);
   const [sortKey, setSortKey] = useState(null);
   const [tagWise, setTagWise] = useState(null);
-  const [tagsArray, setTagsArray] = useState();
-  const [productFoamsArray, setProductFoamsArray] = useState();
-  const [brandArray, setBrandArray] = useState();
+  // const [tagsArray, setTagsArray] = useState();
+  // const [productFoamsArray, setProductFoamsArray] = useState();
+  // const [brandArray, setBrandArray] = useState();
   const [productFoam, setProductFoam] = useState(null);
+  const dispatch = useDispatch();
 
   const [banners, setBanners] = useState({
     bannerWeb: null,
@@ -99,9 +103,11 @@ export default function Shop() {
     getProducts(); // eslint-disable-next-line
   }, [categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
 
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchFilters());
+  }, [dispatch]);
+
+  const { tagsArray,productFoamsArray,brandArray} = useSelector(state => state.shop);
 
   async function getProducts(nextPage) {
     setLoading(true);
