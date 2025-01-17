@@ -54,12 +54,7 @@ import CountUp from 'react-countup';
 import ScrollTrigger from 'react-scroll-trigger';
 
 import {
-  fetchBanner,
-  fetchUpperSection,
-  fetchMustTry,
-  fetchBlogs,
-  fetchStatisticsSection,
-  fetchLowerSection,
+  initializeAppData
 } from "../redux/slices/homeApi";
 const Diseases = [
   {
@@ -130,20 +125,9 @@ export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
   const height = useBreakpointValue({ base: "300", lg: "400" });
-  // const [banners, setBanners] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const [homeData, setHome] = useState({});
   const [sections, setSections] = useState([]);
-  // const [awardsSection, setAwardSection] = useState();
-  // const [servicesSection, setServicesSection] = useState();
-  // const [availableSection, setAvailableSection] = useState();
-  // const [whyKapitaSection, setWhyKapitaSection] = useState();
-  // const [certificateSection, setCertificateSection] = useState();
-  // const [mainProductSection, setMainProductSection] = useState();
-  // const [smallBannerSection, setSmallBannerSection] = useState();
-  // const [nonGMOSection, setNonGMOSection] = useState();
-  // const [statisticsSection, setStatisticsSection] = useState([]);
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
@@ -151,21 +135,19 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(
     sessionStorage.getItem("hasShownPopup")
   );
-  // let [isFull] = useMediaQuery("(max-width:1920px)");
-  // const [blogs, setBlogs] = useState([]);
   const isMobiles = width <= 768;
   const navigate = useNavigate();
-  // const [mustTry, setMustTry] = useState([]);
 
   const dispatch = useDispatch();
   const {
     banners,
     upperSection,
-    mustTrySection,
+    mustTry,
     loader,
     blogs,
     statisticsSection,
-    lowerSection
+    lowerSection,
+    hasFetched,
   } = useSelector((state) => state.home);
 
   const {
@@ -181,127 +163,23 @@ export default function Home() {
     servicesSection,
     availableSection,
   } = lowerSection;
+
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
-
     };
-
     init();
-
-    dispatch(fetchBanner());
-    dispatch(fetchUpperSection());
-    dispatch(fetchMustTry());
-    dispatch(fetchBlogs());
-    dispatch(fetchStatisticsSection());
-    dispatch(fetchLowerSection());
-
-    //CheckOrSetUDID();
-    //getHomePageData();
-    // getBanners();
-    // getBlogs();
-    // getLowerSection();
-    // getStatisticsSection();
-    // getUpperSection();
-    // getMustTry();
     if (showPopup === null && !loginInfo.isLoggedIn) {
       setIsLoginModalOpen(true);
     }
   }, []);
 
-  // async function getBanners() {
-  //   setLoading(true);
-  //   try {
-  //     const response = await client.get("/ecommerce/banners/?sequence=Upper");
+  useEffect(() => {
+    if (!hasFetched) {
+      dispatch(initializeAppData());
+    }
+  }, [dispatch, hasFetched]);
 
-  //     if (response.data.status === true) {
-  //       setBanners(response?.data?.banner);
-  //     }
-
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.error("Error fetching data:", error);
-  //   }
-  // }
-  // async function getMustTry() {
-  //   const response = await client.get("musttry/list");
-  //   if (response) {
-  //     setMustTry(response.data.data);
-  //   }
-  //   setLoading(false);
-  // }
-  // async function getBlogs() {
-  //   const params = {};
-  //   const response = await client.get("/home/blogs/", {
-  //     params: params,
-  //   });
-  //   if (response.data.status === true) {
-  //     setBlogs(response.data.blogs);
-  //   }
-  // }
-
-  // async function getLowerSection() {
-  //   const params = {};
-  //   const response = await client.get("/lower-section/", {
-  //     params: params,
-  //   });
-  //   if (response.data.status === true) {
-  //     setSections(response.data.data);
-
-  //     const ourServicesSection = response.data.data?.filter(
-  //       (section) => section.id === 2
-  //     );
-  //     const availableAtSection = response.data.data?.filter(
-  //       (section) => section.id === 3
-  //     );
-  //     const ourAwardsSection = response.data.data?.filter(
-  //       (section) => section.id === 1
-  //     );
-
-  //     setAwardSection(ourAwardsSection);
-  //     setServicesSection(ourServicesSection);
-  //     setAvailableSection(availableAtSection);
-  //   }
-  // }
-
-  // async function getStatisticsSection() {
-  //   const params = {};
-  //   const response = await client.get("/statistics-section/", {
-  //     params: params,
-  //   });
-  //   if (response.data.status === true) {
-  //     setStatisticsSection(response?.data?.data);
-  //   }
-  // }
-
-  // async function getUpperSection() {
-  //   const params = {};
-  //   const response = await client.get("kapita-section/?type=Upper", {
-  //     params: params,
-  //   });
-  //   if (response.data.status === true) {
-  //     const whyKapita = response.data.data?.filter(
-  //       (section) => section.id === 1
-  //     );
-  //     const certificate = response.data.data?.filter(
-  //       (section) => section.id === 2
-  //     );
-  //     const mainproduct = response.data.data?.filter(
-  //       (section) => section.id === 3
-  //     );
-  //     const smallBanner = response.data.data?.filter(
-  //       (section) => section.id === 4
-  //     );
-  //     const nonGMO = response.data.data?.filter((section) => section.id === 5);
-
-  //     setWhyKapitaSection(whyKapita);
-  //     setCertificateSection(certificate);
-  //     setMainProductSection(mainproduct);
-  //     setSmallBannerSection(smallBanner);
-  //     setNonGMOSection(nonGMO);
-  //   }
-  // }
 
   return (
     <>
@@ -600,10 +478,10 @@ export default function Home() {
           </Container>
         )}
 
-      {mustTrySection?.length > 0 && <ProductListSectionHome
+      {mustTry?.length > 0 && <ProductListSectionHome
         title="Must Try : KAPITA Products"
         loader={loader}
-        products={mustTrySection}
+        products={mustTry}
         type={isMobile && "carousal"}
       />}
 

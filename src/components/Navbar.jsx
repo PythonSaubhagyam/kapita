@@ -261,12 +261,14 @@ export default function Navbar() {
 
   const [Open1, setOpen1] = useState(false);
   const dispatch = useDispatch()
-  const { categories,mergedCategories } = useSelector(
+  const { categories,mergedCategories,hasFetched } = useSelector(
    (state) => state.category
  );
  useEffect(() => {
-  dispatch(fetchCategories()); 
- },[dispatch])
+  if (!hasFetched) {
+    dispatch(fetchCategories());
+  }
+}, [dispatch, hasFetched]);
  
   const handleHover1 = () => {
     if (categories.length > 0) {
