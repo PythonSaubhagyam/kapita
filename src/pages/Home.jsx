@@ -49,6 +49,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
+import { Helmet } from "react-helmet";
 
 const Diseases = [
   {
@@ -260,6 +261,14 @@ export default function Home() {
 
   return (
     <>
+    <Helmet>
+        <title>KAPITA - Home</title> {/* Set default title */}
+        <meta
+          name="description"
+          content="Buy Copper Accessories At Best Price | Copper Utensils | Kapita"
+        />
+        {/* You can add other meta tags for SEO */}
+      </Helmet> 
       {/* {loading === true ? (
         <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
           <Loader site={true} />
