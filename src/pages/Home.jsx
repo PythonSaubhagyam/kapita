@@ -50,7 +50,13 @@ import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
 import { Helmet } from "react-helmet";
+import { useDispatch, useSelector } from "react-redux"
+import CountUp from 'react-countup';
+import ScrollTrigger from 'react-scroll-trigger';
 
+import {
+  initializeAppData
+} from "../redux/slices/homeApi";
 const Diseases = [
   {
     icon: <FaHeartbeat />,
@@ -120,144 +126,61 @@ export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
   const height = useBreakpointValue({ base: "300", lg: "400" });
-  const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const [homeData, setHome] = useState({});
   const [sections, setSections] = useState([]);
-  const [awardsSection, setAwardSection] = useState();
-  const [servicesSection, setServicesSection] = useState();
-  const [availableSection, setAvailableSection] = useState();
-  const [whyKapitaSection, setWhyKapitaSection] = useState();
-  const [certificateSection, setCertificateSection] = useState();
-  const [mainProductSection, setMainProductSection] = useState();
-  const [smallBannerSection, setSmallBannerSection] = useState();
-  const [nonGMOSection, setNonGMOSection] = useState();
-  const [statisticsSection, setStatisticsSection] = useState([]);
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
+  const [countUp, setCountUp] = useState()
   const [showPopup, setShowPopup] = useState(
     sessionStorage.getItem("hasShownPopup")
   );
-  // let [isFull] = useMediaQuery("(max-width:1920px)");
-  const [blogs, setBlogs] = useState([]);
   const isMobiles = width <= 768;
   const navigate = useNavigate();
-  const [mustTry, setMustTry] = useState([]);
+
+  const dispatch = useDispatch();
+  const {
+    banners,
+    upperSection,
+    mustTry,
+    loader,
+    blogs,
+    statisticsSection,
+    lowerSection,
+    hasFetched,
+  } = useSelector((state) => state.home);
+
+  const {
+    ourAboutSection,
+    ourMainProductSection,
+    ourCertificateSection,
+    ourSmallBannerSection,
+    ourNonGmoSection,
+  } = upperSection;
+
+  const {
+    awardsSection,
+    servicesSection,
+    availableSection,
+  } = lowerSection;
+
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
     };
-
     init();
-
-    //CheckOrSetUDID();
-    //getHomePageData();
-    getBanners();
-    getBlogs();
-    getLowerSection();
-    getStatisticsSection();
-    getUpperSection();
-    getMustTry();
     if (showPopup === null && !loginInfo.isLoggedIn) {
       setIsLoginModalOpen(true);
     }
   }, []);
 
-  async function getBanners() {
-    setLoading(true);
-    try {
-      const response = await client.get("/ecommerce/banners/?sequence=Upper");
-
-      if (response.data.status === true) {
-        setBanners(response?.data?.banner);
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:", error);
+  useEffect(() => {
+    if (!hasFetched) {
+      dispatch(initializeAppData());
     }
-  }
-  async function getMustTry() {
-    const response = await client.get("musttry/list");
-    if (response) {
-      setMustTry(response.data.data);
-    }
-    setLoading(false);
-  }
-  async function getBlogs() {
-    const params = {};
-    const response = await client.get("/home/blogs/", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setBlogs(response.data.blogs);
-    }
-  }
+  }, [dispatch, hasFetched]);
 
-  async function getLowerSection() {
-    const params = {};
-    const response = await client.get("/lower-section/", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setSections(response.data.data);
-
-      const ourServicesSection = response.data.data?.filter(
-        (section) => section.id === 2
-      );
-      const availableAtSection = response.data.data?.filter(
-        (section) => section.id === 3
-      );
-      const ourAwardsSection = response.data.data?.filter(
-        (section) => section.id === 1
-      );
-
-      setAwardSection(ourAwardsSection);
-      setServicesSection(ourServicesSection);
-      setAvailableSection(availableAtSection);
-    }
-  }
-
-  async function getStatisticsSection() {
-    const params = {};
-    const response = await client.get("/statistics-section/", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setStatisticsSection(response?.data?.data);
-    }
-  }
-
-  async function getUpperSection() {
-    const params = {};
-    const response = await client.get("kapita-section/?type=Upper", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      const whyKapita = response.data.data?.filter(
-        (section) => section.id === 1
-      );
-      const certificate = response.data.data?.filter(
-        (section) => section.id === 2
-      );
-      const mainproduct = response.data.data?.filter(
-        (section) => section.id === 3
-      );
-      const smallBanner = response.data.data?.filter(
-        (section) => section.id === 4
-      );
-      const nonGMO = response.data.data?.filter((section) => section.id === 5);
-
-      setWhyKapitaSection(whyKapita);
-      setCertificateSection(certificate);
-      setMainProductSection(mainproduct);
-      setSmallBannerSection(smallBanner);
-      setNonGMOSection(nonGMO);
-    }
-  }
 
   return (
     <>
@@ -277,15 +200,15 @@ export default function Home() {
         <> */}
       <Navbar />
       <Container maxW={"container.xl"} px={0}>
-        {loading === true ? (
+        {loader === true ? (
           <Skeleton h={489}></Skeleton>
         ) : (
           <Carousel banners={banners?.length > 0 && banners} />
         )}
       </Container>
 
-      {whyKapitaSection?.length > 0 &&
-        whyKapitaSection[0]?.is_visible_on_website === true && (
+      {ourAboutSection?.length > 0 &&
+        ourAboutSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} mb={8} px={0}>
             <Text
               fontSize={{ base: "xl", sm: "2xl", xl: "2xl" }}
@@ -295,9 +218,9 @@ export default function Home() {
               textAlign={{ base: "center", md: "start" }}
               px={{ base: 2, md: 8 }}
               py={4}
-              //my={3}
+            //my={3}
             >
-              {whyKapitaSection[0]?.label}
+              {ourAboutSection[0]?.label}
             </Text>
             <Text
               color={"text.300"}
@@ -307,7 +230,7 @@ export default function Home() {
               fontSize={{ base: "sm", lg: "lg" }}
               whiteSpace={"pre-line"}
             >
-              {whyKapitaSection[0]?.description}
+              {ourAboutSection[0]?.description}
               <br />
               <br />
             </Text>
@@ -333,22 +256,22 @@ export default function Home() {
           </Container>
         )}
 
-      {certificateSection?.length > 0 &&
-        certificateSection[0]?.is_visible_on_website === true && (
+      {ourCertificateSection?.length > 0 &&
+        ourCertificateSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
             <Image
-              src={certificateSection[0]?.image}
+              src={ourCertificateSection[0]?.image}
               alt=""
               style={{
                 opacity: 1,
                 transition: "opacity 0.7s", // Note the corrected syntax here
-                width:"100%"
+                width: "100%"
               }}
             />
           </Container>
         )}
-      {mainProductSection?.length > 0 &&
-        mainProductSection[0]?.is_visible_on_website === true && (
+      {ourMainProductSection?.length > 0 &&
+        ourMainProductSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
             <Grid
               templateColumns={{
@@ -362,8 +285,8 @@ export default function Home() {
               <GridItem>
                 <Image
                   src={
-                    mainProductSection[0]?.images?.length > 0 &&
-                    mainProductSection[0]?.images[0]?.image
+                    ourMainProductSection[0]?.images?.length > 0 &&
+                    ourMainProductSection[0]?.images[0]?.image
                   }
                 />
               </GridItem>
@@ -379,8 +302,8 @@ export default function Home() {
                     color={"brand.500"}
                     lineHeight={10}
                   >
-                    {mainProductSection[0]?.images?.length > 0 &&
-                      mainProductSection[0]?.images[0]?.product_name}
+                    {ourMainProductSection[0]?.images?.length > 0 &&
+                      ourMainProductSection[0]?.images[0]?.product_name}
                   </Heading>
                   <Text fontSize={"19px"} color="text.300">
                     <span style={{ fontSize: "24px", fontWeight: 600 }}>
@@ -406,7 +329,7 @@ export default function Home() {
                     variant="outline"
                     onClick={() =>
                       navigate(
-                        `/products/${mainProductSection[0]?.images[0]?.product}`
+                        `/products/${ourMainProductSection[0]?.images[0]?.product}`
                       )
                     }
                     cursor={"pointer"}
@@ -456,8 +379,8 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
-      {smallBannerSection?.length > 0 &&
-        smallBannerSection[0]?.is_visible_on_website === true && (
+      {ourSmallBannerSection?.length > 0 &&
+        ourSmallBannerSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} mb={5} px={0}>
             <Grid
               templateColumns={{
@@ -471,8 +394,8 @@ export default function Home() {
               <GridItem>
                 <Image
                   src={
-                    smallBannerSection[0]?.images?.length > 0 &&
-                    smallBannerSection[0]?.images[0]?.image
+                    ourSmallBannerSection[0]?.images?.length > 0 &&
+                    ourSmallBannerSection[0]?.images[0]?.image
                   }
                 />
               </GridItem>
@@ -489,8 +412,8 @@ export default function Home() {
                     fontSize={"19px"}
                     textAlign={"justify"}
                   >
-                    {smallBannerSection[0]?.images?.length > 0 &&
-                      smallBannerSection[0]?.images[0]?.description}
+                    {ourSmallBannerSection[0]?.images?.length > 0 &&
+                      ourSmallBannerSection[0]?.images[0]?.description}
                   </Text>
                   <Link
                     fontWeight={700}
@@ -527,8 +450,8 @@ export default function Home() {
                     fontSize={"19px"}
                     textAlign={"justify"}
                   >
-                    {smallBannerSection[0]?.images?.length > 0 &&
-                      smallBannerSection[0]?.images[1]?.description}
+                    {ourSmallBannerSection[0]?.images?.length > 0 &&
+                      ourSmallBannerSection[0]?.images[1]?.description}
                   </Text>
                   <Link
                     fontWeight={700}
@@ -555,8 +478,8 @@ export default function Home() {
               <GridItem cursor={"pointer"}>
                 <Image
                   src={
-                    smallBannerSection[0]?.images?.length > 0 &&
-                    smallBannerSection[0]?.images[1]?.image
+                    ourSmallBannerSection[0]?.images?.length > 0 &&
+                    ourSmallBannerSection[0]?.images[1]?.image
                   }
                 />
               </GridItem>
@@ -564,9 +487,9 @@ export default function Home() {
           </Container>
         )}
 
-     {mustTry?.length > 0 && <ProductListSectionHome
+      {mustTry?.length > 0 && <ProductListSectionHome
         title="Must Try : KAPITA Products"
-        loading={loading}
+        loader={loader}
         products={mustTry}
         type={isMobile && "carousal"}
       />}
@@ -594,7 +517,7 @@ export default function Home() {
                     src={blog.banner}
                     w="100%"
                     h="300px"
-                    loading="lazy"
+                    loader="lazy"
                     objectFit={"cover"}
                     borderRadius={5}
                     style={{
@@ -700,9 +623,22 @@ export default function Home() {
           >
             {statisticsSection?.length > 0 &&
               statisticsSection?.map((data) => (
-                <Stat>
+                <Stat key={data.id}>
                   <StatNumber fontSize={{ base: "3xl", md: "3xl" }}>
-                    {data?.value}
+                    <ScrollTrigger
+                      onEnter={() => setCountUp(true)}
+                      // onExit={() => setCountUp(false)}
+                    >
+                      {countUp ? (
+                        <CountUp
+                          start={0}
+                          end={Number(data.value.replace('+', ''))}
+                          duration={2}
+                          delay={0}
+                        />
+                      ) : null}
+                      +
+                      </ScrollTrigger>
                   </StatNumber>
                   <StatHelpText color="gray.600">{data?.name}</StatHelpText>
                 </Stat>
@@ -732,12 +668,12 @@ export default function Home() {
             }}
           />
         </Flex> */}
-        {nonGMOSection?.length > 0 &&
-          nonGMOSection[0]?.is_visible_on_website === true && (
+        {ourNonGmoSection?.length > 0 &&
+          ourNonGmoSection[0]?.is_visible_on_website === true && (
             <Container maxW={"container.xl"} centerContent>
               <Image
                 my={10}
-                src={nonGMOSection[0]?.image}
+                src={ourNonGmoSection[0]?.image}
                 w={{ md: "65%" }}
               />
             </Container>
