@@ -125,81 +125,6 @@ const Links = [
   // },
 ];
 
-// const mainLinks = [
-//   {
-//     name: "Gifting",
-//     categoryId: 288,
-//   },
-//   {
-//     name: "GIR Gau Products",
-//     categoryId: 278,
-//   },
-//   {
-//     name: "Health Care",
-//     categoryId: 281,
-//   },
-//   {
-//     name: "Personal Care",
-//     categoryId: 344,
-//   },
-//   {
-//     name: "Nutrition",
-//     categoryId: 788,
-//   },
-
-//   {
-//     name: "Grocery",
-//     categoryId: 291,
-//   },
-//   {
-//     name: "Healthy Breakfast",
-//     categoryId: 775,
-//   },
-//   {
-//     name: "Healthy Snacks",
-//     categoryId: 317,
-//   },
-//   {
-//     name: "Healthy Powder",
-//     categoryId: 716,
-//   },
-//   {
-//     name: "Chocolate & Bars",
-//     categoryId: 773,
-//   },
-//   {
-//     name: "Tea & Coffee",
-//     categoryId: 769,
-//   },
-//   {
-//     name: "Beverages",
-//     categoryId: 772,
-//   },
-//   {
-//     name: "Seasonal Foods",
-//     categoryId: 290,
-//   },
-//   {
-//     name: "World Foods",
-//     categoryId: 771,
-//   },
-//   {
-//     name: "Home Care",
-//     categoryId: 347,
-//   },
-
-//   // {
-//   //   name: "Super Food",
-//   //   categoryId: 601,
-//   // },
-
-//   // {
-//   //   name: "Sweetener",
-//   //   categoryId: 774,
-//   // },
-
-//   ,
-// ];
 
 export default function Navbar() {
   let { search } = useLocation();
@@ -288,19 +213,6 @@ export default function Navbar() {
     setNestedCategories(data);
   };
 
-
-  // const getMegaCategories = async () => {
-  //   const response = await client.get("/categories/?mega_menu=mega_menu", {
-  //     params: { list: true },
-  //   });
-
-  //   if (response.data.status === true) {
-  //     setMegaCategories(response.data.categories);
-  //   }
-  // };
-
-  // console.log(mergedCategories)
-
   const toggleSection = (index, section) => {
     setAll(false);
     if (section.children.length !== 0) {
@@ -326,13 +238,6 @@ export default function Navbar() {
   }, [navigate]);
   const [isFlexVisible, setIsFlexVisible] = useState(true);
   const flexRef = useRef(null);
-  // const setCategoryFilter = async (categoryId) => {
-  //   if (JSON.parse(categoryId !== null)) {
-  //     setSearchParams({ category: categoryId });
-  //   } else {
-  //     setSearchParams({});
-  //   }
-  // };
 
   let name = [
     localStorage.getItem("first_name"),
@@ -348,27 +253,8 @@ export default function Navbar() {
     };
 
     init();
-    // getCategories();
   }, []);
 
-  // const mergeArraysById = (array1, array2) =>
-  //   array1.reduce((result, obj) => {
-  //     const matchingObj = array2.find((o) => o.id === obj.categoryId);
-  //     if (matchingObj) result.push({ ...obj, ...matchingObj });
-  //     return result;
-  //   }, []);
-
-  // const getCategories = async () => {
-  //   const response = await client.get("/categories/", {
-  //     params: { list: true },
-  //   });
-
-  //   if (response.data.status === true) {
-  //     setCategories(response.data.categories);
-  //     setMegaCategories(response.data.categories);
-  //     setTopCategory(mergeArraysById(mainLinks, response.data.categories));
-  //   }
-  // };
 
   useEffect(() => {
     if (didMount.current === true) {
@@ -440,22 +326,7 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  // const Logout = () => {
-  //   localStorage.clear();
-  //   CartEmitter.emit("updateCartCount", 0);
-  //   CartEmitter.emit("updateProductTotal", 0);
-  //   toast({
-  //     title: "Logged out successfully!",
-  //     status: "success",
-  //     position: "top-right",
-  //     duration: 4000,
-  //     isClosable: true,
-  //   });
-
-  //   navigate("/");
-  //   // CheckOrSetUDID();
-  // };
-
+ 
   const Logout = () => {
     // localStorage.clear();
     const userKeys = [
@@ -577,7 +448,7 @@ export default function Navbar() {
                               lg: "75%",
                             }}
                           >
-                            <LinkOverlay href={`/products/${result.id}`}>
+                            <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
                               {result.name}
                             </LinkOverlay>
                           </Text>
@@ -1058,7 +929,7 @@ export default function Navbar() {
                           lg: "75%",
                         }}
                       >
-                        <LinkOverlay href={`/products/${result.id}`}>
+                        <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
                           {result.name}
                         </LinkOverlay>
                       </Text>

@@ -44,7 +44,7 @@ import {
 } from "@chakra-ui/react";
 import client from "../setup/axiosClient";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
-import { useNavigate, NavLink as RouterLink } from "react-router-dom";
+import { useNavigate, NavLink as RouterLink,Link as ReactRouterLink } from "react-router-dom";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
@@ -57,6 +57,7 @@ import ScrollTrigger from 'react-scroll-trigger';
 import {
   initializeAppData
 } from "../redux/slices/homeApi";
+import MetaHome from "../components/MetaHome";
 const Diseases = [
   {
     icon: <FaHeartbeat />,
@@ -91,37 +92,6 @@ const Diseases = [
     title: "Slow Down Ageing",
   },
 ];
-const banner = [
-  {
-    id: 11,
-    alt_text: "Image2",
-    image: require("../assets/Home Page Banners/01.jpg"),
-    display_status: true,
-    image_url: "/products/1635",
-  },
-  {
-    id: 12,
-    alt_text: "Image3",
-    image: require("../assets/Home Page Banners/02.jpg"),
-    display_status: true,
-    image_url: "/products/1641",
-  },
-  {
-    id: 13,
-    alt_text: "Image3",
-    image: require("../assets/Home Page Banners/03.jpg"),
-    display_status: true,
-    image_url: "/products/1639",
-  },
-  {
-    id: 14,
-    alt_text: "Image4",
-    image: require("../assets/Home Page Banners/04.jpg"),
-    display_status: true,
-    image_url: "/products/1640",
-  },
-];
-
 export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
@@ -146,7 +116,7 @@ export default function Home() {
     mustTry,
     loader,
     blogs,
-    statisticsSection,
+    statistics,
     lowerSection,
     hasFetched,
   } = useSelector((state) => state.home);
@@ -181,18 +151,14 @@ export default function Home() {
     }
   }, [dispatch, hasFetched]);
 
+  const pageUrl = "/";
 
   return (
     <>
-    <Helmet>
-        <title>KAPITA - Home</title> {/* Set default title */}
-        <meta
-          name="description"
-          content="Buy Copper Accessories At Best Price | Copper Utensils | Kapita"
-        />
-        {/* You can add other meta tags for SEO */}
-      </Helmet> 
-      {/* {loading === true ? (
+    <MetaHome pageUrl={pageUrl} />
+
+    
+      {/* {Loader === true ? (
         <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
           <Loader site={true} />
         </Center>
@@ -527,7 +493,8 @@ export default function Home() {
                   />
                   <LinkOverlay
                     _hover={{ color: "text.500" }}
-                    href={`/blogs/${blog.id}/`}
+                    as={ReactRouterLink}
+                    to={`/blogs/${blog.id}/`}
                   >
                     <Heading size="sm" fontWeight={500} m={2}>
                       {blog.title}
@@ -609,7 +576,7 @@ export default function Home() {
           </Container>
         )}
 
-      {statisticsSection?.length > 0 && (
+      {statistics?.length > 0 && (
         <Container backgroundColor={"bg.500"} maxW={"container.xl"} py={2}>
           <SimpleGrid
             columns={[2, 3, null, 5]}
@@ -621,11 +588,11 @@ export default function Home() {
             spacingX={{ base: "10vw", md: "30px" }}
             spacingY="40px"
           >
-            {statisticsSection?.length > 0 &&
-              statisticsSection?.map((data) => (
+            {statistics?.length > 0 &&
+              statistics?.map((data) => (
                 <Stat key={data.id}>
                   <StatNumber fontSize={{ base: "3xl", md: "3xl" }}>
-                    <ScrollTrigger
+                    {/* <ScrollTrigger
                       onEnter={() => setCountUp(true)}
                       // onExit={() => setCountUp(false)}
                     >
@@ -638,7 +605,8 @@ export default function Home() {
                         />
                       ) : null}
                       +
-                      </ScrollTrigger>
+                      </ScrollTrigger> */}
+                      {data.value}
                   </StatNumber>
                   <StatHelpText color="gray.600">{data?.name}</StatHelpText>
                 </Stat>

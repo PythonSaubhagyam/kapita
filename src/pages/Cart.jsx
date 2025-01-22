@@ -66,12 +66,12 @@ export default function Cart() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const loginInfo = checkLogin();
- 
+
 
   async function getCart() {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -103,7 +103,7 @@ export default function Cart() {
   useEffect(() => {
     const loginInfo = checkLogin();
     if (loginInfo.isLoggedIn) {
-      getCart(); 
+      getCart();
     }
   }, [checkLogin().isLoggedIn]);
 
@@ -136,7 +136,7 @@ export default function Cart() {
   const removeProductFromCart = async (id) => {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -177,8 +177,8 @@ export default function Cart() {
         duration: 4000,
         isClosable: true,
       });
-      setVoucherCode("")
-      setVoucherApplied(false);
+    setVoucherCode("")
+    setVoucherApplied(false);
   };
 
   async function handleQuantityChange(
@@ -188,7 +188,7 @@ export default function Cart() {
   ) {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -340,7 +340,6 @@ export default function Cart() {
   const AmountTable = () => {
     return (
       <>
-        <MetaTags pageUrl={pageUrl} />
 
         {cartItems.length > 0 ? (
           <Box
@@ -486,6 +485,8 @@ export default function Cart() {
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
+
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"My Cart"} secondUrl={"/cart"} />
@@ -685,7 +686,7 @@ export default function Cart() {
           onClose={() => setIsLoginModalOpen(false)}
         />
       )}
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

@@ -156,7 +156,7 @@ export default function Login() {
 
   return (
     <>
-          <MetaTags pageUrl={pageUrl} />
+      <MetaTags pageUrl={pageUrl} />
 
       <Navbar />
       <Container>
