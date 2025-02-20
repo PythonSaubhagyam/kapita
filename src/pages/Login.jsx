@@ -56,6 +56,7 @@ export default function Login() {
               title: "Login successfully!",
               position: "top-right",
               status: "success",
+              isClosable: true,
               duration: 2000,
             });
             CartEmitter.emit("updateProductTotal", true);

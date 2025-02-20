@@ -43,7 +43,7 @@ import CarouselLoginModal from "./CarouselLoginModal";
 
 const imageList = [
   "https://s3organicbucket.s3.amazonaws.com/master/Products/images/login_popup_image2.jpeg",
- "https://s3organicbucket.s3.amazonaws.com/master/Products/images/login_popup_image1.jpeg"
+  "https://s3organicbucket.s3.amazonaws.com/master/Products/images/login_popup_image1.jpeg"
 ];
 
 const LoginModal = ({ isOpen, onClose, onOpen }) => {
@@ -154,6 +154,8 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
           position: "top-right",
           status: "success",
           duration: 2000,
+          isClosable: true,
+
         });
         CartEmitter.emit("updateProductTotal", true);
         localStorage.setItem("token", response.data.data.token);
@@ -193,7 +195,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
         if (response.data.data.is_staff || response.data.data.is_superuser) {
           localStorage.setItem("id", response.data.data.id);
           localStorage.setItem("access", true);
-          if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
+          if (location.pathname === "/signup" || location.pathname === "/reset-password") {
             navigate("/shop", { replace: true });
             onClose();
           } else {
@@ -201,7 +203,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
           }
         } else {
           // setTimeout(() => {
-          if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
+          if (location.pathname === "/signup" || location.pathname === "/reset-password") {
             navigate("/", { replace: true });
             onClose();
           } else {
@@ -260,6 +262,8 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
               position: "top-right",
               status: "success",
               duration: 2000,
+              isClosable: true,
+
             });
             CartEmitter.emit("updateProductTotal", true);
             localStorage.setItem("token", response.data.data.token);
@@ -305,14 +309,14 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
             ) {
               localStorage.setItem("id", response.data.data.id);
               localStorage.setItem("access", true);
-              if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
+              if (location.pathname === "/signup" || location.pathname === "/reset-password") {
                 navigate("/shop", { replace: true });
                 onClose();
               } else {
                 onClose();
               }
             } else {
-              if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
+              if (location.pathname === "/signup" || location.pathname === "/reset-password") {
                 navigate("/", { replace: true });
                 onClose();
               } else {
@@ -586,14 +590,14 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                           isDisabled={phoneNumber?.length === 10 ? false : true}
                           borderRadius={"10px"}
                           type="submit"
-                          // onClick={() => {
-                          //   setShow(true);
-                          //   if (code === undefined || !show) {
-                          //     handleOTPSubmit(); // OTP submission if not done
-                          //   } else {
-                          //     handleMobileSubmit(); // Mobile verification after OTP
-                          //   }
-                          // }}
+                        // onClick={() => {
+                        //   setShow(true);
+                        //   if (code === undefined || !show) {
+                        //     handleOTPSubmit(); // OTP submission if not done
+                        //   } else {
+                        //     handleMobileSubmit(); // Mobile verification after OTP
+                        //   }
+                        // }}
                         >
                           Continue
                         </Button>

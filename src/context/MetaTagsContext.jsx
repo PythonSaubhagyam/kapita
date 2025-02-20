@@ -64,7 +64,6 @@ const MetaTags = ({ pageUrl }) => {
         content="Premium copper utensils with antimicrobial properties,
          promoting sustainability and health. Durable and eco-friendly."
       />
-      <meta name="keywords" content="" />
     </Helmet>
   );
 };

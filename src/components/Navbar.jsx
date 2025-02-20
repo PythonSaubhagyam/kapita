@@ -186,15 +186,15 @@ export default function Navbar() {
 
   const [Open1, setOpen1] = useState(false);
   const dispatch = useDispatch()
-  const { categories,mergedCategories,hasFetched } = useSelector(
-   (state) => state.category
- );
- useEffect(() => {
-  if (!hasFetched) {
-    dispatch(fetchCategories());
-  }
-}, [dispatch, hasFetched]);
- 
+  const { categories, mergedCategories, hasFetched } = useSelector(
+    (state) => state.category
+  );
+  useEffect(() => {
+    if (!hasFetched) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, hasFetched]);
+
   const handleHover1 = () => {
     if (categories.length > 0) {
       setOpen(true);
@@ -244,7 +244,7 @@ export default function Navbar() {
     localStorage.getItem("last_name"),
   ].join(" ");
 
-  
+
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
@@ -326,7 +326,7 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
- 
+
   const Logout = () => {
     // localStorage.clear();
     const userKeys = [
@@ -340,6 +340,8 @@ export default function Navbar() {
       "is_sose_elite_user",
       "id",
       "access",
+      "cart_counter",
+
     ];
 
     userKeys.forEach((key) => localStorage.removeItem(key));
@@ -354,6 +356,9 @@ export default function Navbar() {
     });
 
     navigate("/");
+    setTimeout(() => {
+      window.location.reload();
+    });
     // CheckOrSetUDID();
   };
 
@@ -438,6 +443,8 @@ export default function Navbar() {
                           align="center"
                           bg="bg.100"
                           gap={4}
+                          onClick={() => setSearchResults(null)}
+
                         >
                           <Image src={result.image1} boxSize="10" />
                           <Text
@@ -448,7 +455,7 @@ export default function Navbar() {
                               lg: "75%",
                             }}
                           >
-                            <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
+                            <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}/${result.name.replace(/\s+/g, "-")}`}>
                               {result.name}
                             </LinkOverlay>
                           </Text>
@@ -570,15 +577,15 @@ export default function Navbar() {
                       style={
                         all
                           ? {
-                              background: "#436131",
-                              color: "white",
-                              borderRadius: 5,
-                            }
+                            background: "#436131",
+                            color: "white",
+                            borderRadius: 5,
+                          }
                           : {
-                              background: "white",
-                              color: "black",
-                              borderRadius: 5,
-                            }
+                            background: "white",
+                            color: "black",
+                            borderRadius: 5,
+                          }
                       }
                     >
                       <Box
@@ -619,8 +626,7 @@ export default function Navbar() {
                                     setOpenAccrodion();
                                   } else {
                                     navigate(
-                                      `/shop?page=1&category=${
-                                        section.id
+                                      `/shop?page=1&category=${section.id
                                       }&category_name=${encodeURIComponent(
                                         section?.name
                                       )}`
@@ -686,8 +692,7 @@ export default function Navbar() {
                                                     setOpen(Open);
                                                   } else {
                                                     navigate(
-                                                      `/shop?page=1&category=${
-                                                        subcategory.id
+                                                      `/shop?page=1&category=${subcategory.id
                                                       }&category_name=${encodeURIComponent(
                                                         subcategory?.name
                                                       )}`
@@ -708,8 +713,7 @@ export default function Navbar() {
                                                 <AccordionIcon
                                                   onClick={() =>
                                                     navigate(
-                                                      `/shop?page=1&category=${
-                                                        subcategory.id
+                                                      `/shop?page=1&category=${subcategory.id
                                                       }&category_name=${encodeURIComponent(
                                                         subcategory?.name
                                                       )}`
@@ -745,8 +749,7 @@ export default function Navbar() {
                                                           key={i}
                                                           onClick={() => {
                                                             navigate(
-                                                              `/shop?page=1&category=${
-                                                                children.id
+                                                              `/shop?page=1&category=${children.id
                                                               }&category_name=${encodeURIComponent(
                                                                 subcategory?.name
                                                               )}`
@@ -830,7 +833,7 @@ export default function Navbar() {
           <GridItem
             rowSpan={2}
             colSpan={1}
-            // style={{ borderBottom: "0.5px solid #b7b7b7" }}
+          // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
             <Link as={ReactRouterLink} to="/">
               <Image
@@ -845,7 +848,7 @@ export default function Navbar() {
             colSpan={7}
             display={"flex"}
             alignItems={"center"}
-            // style={{ borderBottom: "0.5px solid #b7b7b7" }}
+          // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
             <InputGroup size="sm" width={"100%"} mt={3}>
               <Input
@@ -919,6 +922,8 @@ export default function Navbar() {
                         borderRadius: 6,
                         cursor: "pointer",
                       }}
+                      onClick={() => setSearchResults(null)}
+
                     >
                       {/* <Image src={result.image1} boxSize="10" /> */}
                       <Text
@@ -929,7 +934,7 @@ export default function Navbar() {
                           lg: "75%",
                         }}
                       >
-                        <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
+                        <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}/${result.name.replace(/\s+/g, "-")}`}>
                           {result.name}
                         </LinkOverlay>
                       </Text>
@@ -1031,7 +1036,7 @@ export default function Navbar() {
           <GridItem
             colSpan={9}
             display={"flex"}
-            // style={{ borderBottom: "0.5px solid #b7b7b7" }}
+          // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
             <Flex
               as={"nav"}
@@ -1086,8 +1091,7 @@ export default function Navbar() {
                           onMouseEnter={() => handleShow1(section.children)}
                           onClick={() =>
                             navigate(
-                              `/shop?page=1&category=${
-                                section.id
+                              `/shop?page=1&category=${section.id
                               }&category_name=${encodeURIComponent(
                                 section?.name
                               )}`
@@ -1115,8 +1119,7 @@ export default function Navbar() {
                         key={subIndex}
                         onClick={() =>
                           navigate(
-                            `/shop?page=1&category=${
-                              item.id
+                            `/shop?page=1&category=${item.id
                             }&category_name=${encodeURIComponent(item?.name)}`
                           )
                         }
@@ -1139,8 +1142,7 @@ export default function Navbar() {
                         key={nestedIndex}
                         onClick={() =>
                           navigate(
-                            `/shop?page=1&category=${
-                              item.id
+                            `/shop?page=1&category=${item.id
                             }&category_name=${encodeURIComponent(item?.name)}`
                           )
                         }

@@ -44,7 +44,7 @@ import {
 } from "@chakra-ui/react";
 import client from "../setup/axiosClient";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
-import { useNavigate, NavLink as RouterLink,Link as ReactRouterLink } from "react-router-dom";
+import { useNavigate, NavLink as RouterLink, Link as ReactRouterLink } from "react-router-dom";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
@@ -58,6 +58,7 @@ import {
   initializeAppData
 } from "../redux/slices/homeApi";
 import MetaHome from "../components/MetaHome";
+import BlogSliderHome from "../components/BlogSliderHome";
 const Diseases = [
   {
     icon: <FaHeartbeat />,
@@ -155,9 +156,9 @@ export default function Home() {
 
   return (
     <>
-    <MetaHome pageUrl={pageUrl} />
+      <MetaHome pageUrl={pageUrl} />
 
-    
+
       {/* {Loader === true ? (
         <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
           <Loader site={true} />
@@ -295,7 +296,7 @@ export default function Home() {
                     variant="outline"
                     onClick={() =>
                       navigate(
-                        `/products/${ourMainProductSection[0]?.images[0]?.product}`
+                        `/products/${ourMainProductSection[0]?.images[0]?.product}/${ourMainProductSection[0]?.images[0]?.product_name.replace(/\s+/g, "-")}`
                       )
                     }
                     cursor={"pointer"}
@@ -453,77 +454,17 @@ export default function Home() {
           </Container>
         )}
 
-      {mustTry?.length > 0 && <ProductListSectionHome
+      {mustTry?.length > 0 && 
+      <ProductListSectionHome
         title="Must Try : KAPITA Products"
         loader={loader}
         products={mustTry}
         type={isMobile && "carousal"}
       />}
 
-      <Container maxW={"container.xl"}>
-        <Heading color="brand.500" size="lg" mx="auto" align={"center"} mt={3}>
-          BLOGS
-        </Heading>
+      <BlogSliderHome blogs={blogs} />
 
-        <Grid
-          templateColumns={{
-            base: "repeat(1,1fr)",
-            md: "repeat(2,1fr)",
-            lg: "repeat(4,1fr)",
-          }}
-          px={2}
-          py={3}
-          spacing="40px"
-        >
-          {blogs?.slice(0, 8).map((blog) => (
-            <GridItem key={blog.id} m={4}>
-              <Card>
-                <LinkBox h={400}>
-                  <Image
-                    src={blog.banner}
-                    w="100%"
-                    h="300px"
-                    loader="lazy"
-                    objectFit={"cover"}
-                    borderRadius={5}
-                    style={{
-                      opacity: 1,
-                      transition: "opacity 0.7s", // Note the corrected syntax here
-                    }}
-                  />
-                  <LinkOverlay
-                    _hover={{ color: "text.500" }}
-                    as={ReactRouterLink}
-                    to={`/blogs/${blog.id}/`}
-                  >
-                    <Heading size="sm" fontWeight={500} m={2}>
-                      {blog.title}
-                    </Heading>
-                  </LinkOverlay>
-                </LinkBox>
-                <Flex m={2} justifyContent={"space-between"}>
-                  <Text fontSize={"sm"} color="gray.500">
-                    {new Intl.DateTimeFormat("en-CA", {
-                      dateStyle: "long",
-                      timeZone: "Asia/Kolkata",
-                    }).format(new Date(blog.published_at))}
-                  </Text>
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={600}
-                    color={"brand.500"}
-                    onClick={() => navigate(`/blogs/${blog.id}/`)}
-                    cursor={"pointer"}
-                  >
-                    Read more
-                    <ChevronRightIcon />
-                  </Text>
-                </Flex>
-              </Card>
-            </GridItem>
-          ))}
-        </Grid>
-      </Container>
+
       {awardsSection?.length > 0 &&
         awardsSection[0]?.is_visible_on_website === true && (
           <Container maxW={{ base: "100vw", md: "container.xl" }}>
@@ -592,7 +533,7 @@ export default function Home() {
               statistics?.map((data) => (
                 <Stat key={data.id}>
                   <StatNumber fontSize={{ base: "3xl", md: "3xl" }}>
-                    {/* <ScrollTrigger
+                    <ScrollTrigger
                       onEnter={() => setCountUp(true)}
                       // onExit={() => setCountUp(false)}
                     >
@@ -604,9 +545,9 @@ export default function Home() {
                           delay={0}
                         />
                       ) : null}
-                      +
-                      </ScrollTrigger> */}
-                      {data.value}
+                      {data?.name === "Positive Feedback" ? "%+" : "+"}
+                      </ScrollTrigger>
+                    
                   </StatNumber>
                   <StatHelpText color="gray.600">{data?.name}</StatHelpText>
                 </Stat>

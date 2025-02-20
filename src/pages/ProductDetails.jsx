@@ -31,9 +31,14 @@ import {
   FormControl,
   FormLabel,
   Textarea,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaInstagram, FaShoppingCart } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ReactStars from "react-stars";
@@ -53,6 +58,8 @@ import StarRating from "../components/StarRatings";
 import ScrollToTop from "../components/ScrollToTop";
 import LoginModal from "../components/LoginModal";
 import { Helmet } from "react-helmet";
+import { IoMdShare } from "react-icons/io";
+import { FaShareAlt, FaFacebook, FaTwitter, FaWhatsapp, FaCopy } from "react-icons/fa";
 function ButtonIncrement(props) {
   return (
     <Button
@@ -109,17 +116,19 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
+
   // const maxWidth = useBreakpointValue({ base: "100%", lg: "container.xl" });
   // const boxWidth = useBreakpointValue({ base: "100%", lg: "75%" });
   const loginInfo = checkLogin();
-  
+  const [isMobile] = useMediaQuery("(max-width: 1024px)");
+
   const MINIMUM_RATING_THRESHOLD = 0.0;
   const incrementCounter = () => setCounter(counter + 1);
   let decrementCounter = () => setCounter(counter - 1);
   if (counter <= 1) {
     decrementCounter = () => setCounter(1);
   }
- 
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { productId } = useParams();
 
@@ -305,10 +314,35 @@ export default function ProductDetails() {
       element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
+
+
+  const url = window.location.href;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copied!",
+        description: "You can now share it anywhere.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: "Failed to copy",
+        description: "Please try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
-    {" "}
-    <Helmet>
+      {" "}
+      <Helmet>
         <title>{productData?.metatitle || productData?.name}</title>
         <meta name="description" content={productData?.metadescription} />
         <meta name="keywords" content={productData?.metakeywords} />
@@ -335,7 +369,7 @@ export default function ProductDetails() {
         </Center>
       ) : (
         <>
-          <Container maxW="container.xl" mb={0}>
+          <Container maxW="container.xl" mb={0} position={"relative"} >
             <Box>
               <BreadCrumbCom
                 second={"Product"}
@@ -345,12 +379,13 @@ export default function ProductDetails() {
                   .split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" ")}`}
-                // thirdUrl={`/shop?category=${categories.categoryId || ''}`}
+              // thirdUrl={`/shop?category=${categories.categoryId || ''}`}
               />
             </Box>
           </Container>
 
           <Container maxW={"8xl"} px={8} alignItems={"baseline"}>
+
             <Flex
               position={"relative"}
               direction={{ base: "column", sm: "row" }}
@@ -362,7 +397,47 @@ export default function ProductDetails() {
               // pb={{ base: 18, md: 0 }}
               alignItems={{ base: "center", md: "flex-start" }}
             >
-              <Box width={{ md: "50%" }}>
+              <Box width={{ md: "50%" }} position={"relative"}  >
+                <Box position={"absolute"}  right={"0"} zIndex={11} >
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      background="brand.500"
+                      _hover={{ background: "brand.500" }}
+                      color="white"
+                      ><FaShareAlt />
+                    </MenuButton>
+
+                    <MenuList>
+                      <MenuItem icon={<FaFacebook size={"20px"} />  }
+                        as="a"
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
+                        target="_blank"
+                      >
+                        Facebook
+                      </MenuItem>
+                      <MenuItem
+                        icon={<FaInstagram size={"20px"} />}
+                        as="a"
+                        href={`https://www.instagram.com/`}
+                        target="_blank"
+                      >
+                        Instagram
+                      </MenuItem>
+                      <MenuItem icon={<FaWhatsapp size={"20px"} />}
+                        as="a"
+                        href={`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`}
+                        target="_blank"
+                      >
+                        WhatsApp
+                      </MenuItem>
+                      <MenuItem icon={<FaCopy size={"20px"} />} onClick={handleCopy}>
+                        Copy Link
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Box>
+
                 <Skeleton isLoaded={!loading}>
                   <ProductImageSection images={productData?.images ?? []} />
                 </Skeleton>
@@ -375,8 +450,9 @@ export default function ProductDetails() {
                   gap={2}
                   align={{ base: "flex-start", md: "flex-start" }}
 
-                  //mt={{md:16}}
+                //mt={{md:16}}
                 >
+
                   <Heading
                     // mb={2}
                     as={"header"}
@@ -393,6 +469,7 @@ export default function ProductDetails() {
                     }}
                     textTransform={"capitalize"}
                   >
+
                     {productData?.name
                       .toLowerCase()
                       .split(" ")
@@ -401,6 +478,7 @@ export default function ProductDetails() {
                       )
                       .join(" ")}
                   </Heading>
+
                   <Flex>
                     {/* <Badge
                       as={Flex}
@@ -418,24 +496,29 @@ export default function ProductDetails() {
                     </Badge> */}
                     {productData.brand_name &&
                       productData.brand_name.length > 0 && (
-                        <Text
-                          fontSize={{
-                            base: "14px",
-                            lg: "18px",
-                          }}
-                          color={"#A05D26"}
-                          fontWeight={"500"}
-                          mr={2}
-                          cursor={"pointer"}
-                          onClick={() =>
-                            navigate(
-                              `/shop?page=1&brand=${productData.brand}&brand_name=${productData.brand_name}`
-                            )
-                          }
-                        >
-                          Brand :{"  "}
-                          {productData.brand_name}
-                        </Text>
+                        <Box>
+                          <Text
+                            fontSize={{
+                              base: "14px",
+                              lg: "18px",
+                            }}
+                            color={"#A05D26"}
+                            fontWeight={"500"}
+                            mr={2}
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/shop?page=1&brand=${productData.brand}&brand_name=${productData.brand_name}`
+                              )
+                            }
+                          >
+                            Brand :{"  "}
+                            {productData.brand_name}
+
+
+                          </Text>
+
+                        </Box>
                       )}
                     {/* <Box
                       // as="ul"
@@ -656,15 +739,15 @@ export default function ProductDetails() {
                         _hover={
                           isWished
                             ? {
-                                color: "white",
-                                bg: "red.600",
-                                cursor: "pointer",
-                              }
+                              color: "white",
+                              bg: "red.600",
+                              cursor: "pointer",
+                            }
                             : {
-                                color: "white",
-                                bg: "brand.900",
-                                cursor: "pointer",
-                              }
+                              color: "white",
+                              bg: "brand.900",
+                              cursor: "pointer",
+                            }
                         }
                         onClick={() => handleWishlistChange(productData?.id)}
                       >
@@ -744,7 +827,7 @@ export default function ProductDetails() {
                     mx="auto"
                     mt={4}
                     colorScheme="brand"
-                    onClick={() => navigate(`/products/${productId}/reviews`)}
+                    onClick={() => navigate(`/products/${productId}/reviews${productData?.name.replace(/\s+/g, "-")}`)}
                   >
                     View all reviews
                   </Button>
@@ -760,7 +843,7 @@ export default function ProductDetails() {
               loading={loading}
               justify="center"
               fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
+              type={isMobile && "carousal"}
             />
           )}
 
@@ -771,7 +854,7 @@ export default function ProductDetails() {
               justify="center"
               loading={loading}
               fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
+              type={isMobile && "carousal"}
             />
           )}
 
@@ -782,7 +865,7 @@ export default function ProductDetails() {
               justify="center"
               loading={loading}
               fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
+              type={isMobile && "carousal"}
             />
           )}
 
@@ -843,11 +926,11 @@ export default function ProductDetails() {
             </ModalContent>
           </Modal>
           {!checkLogin().isLoggedIn && (
-        <LoginModal
-          isOpen={isLoginModalOpen}
-          onClose={() => setIsLoginModalOpen(false)}
-        />
-      )}
+            <LoginModal
+              isOpen={isLoginModalOpen}
+              onClose={() => setIsLoginModalOpen(false)}
+            />
+          )}
           {/* </Flex> */}
           <ScrollToTop />
         </>
