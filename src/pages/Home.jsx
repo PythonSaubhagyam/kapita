@@ -103,7 +103,7 @@ export default function Home() {
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
-  const [countUp, setCountUp] = useState()
+  const [countUp, setCountUp] = useState(false)
   const [showPopup, setShowPopup] = useState(
     sessionStorage.getItem("hasShownPopup")
   );
