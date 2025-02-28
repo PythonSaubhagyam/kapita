@@ -454,13 +454,13 @@ export default function Home() {
           </Container>
         )}
 
-      {mustTry?.length > 0 && 
-      <ProductListSectionHome
-        title="Must Try : KAPITA Products"
-        loader={loader}
-        products={mustTry}
-        type={isMobile && "carousal"}
-      />}
+      {mustTry?.length > 0 &&
+        <ProductListSectionHome
+          title="Must Try : KAPITA Products"
+          loader={loader}
+          products={mustTry}
+          type={isMobile && "carousal"}
+        />}
 
       <BlogSliderHome blogs={blogs} />
 
@@ -535,17 +535,17 @@ export default function Home() {
                   <StatNumber fontSize={{ base: "3xl", md: "3xl" }}>
                     <ScrollTrigger
                       onEnter={() => setCountUp(true)}
-                      // onExit={() => setCountUp(false)}
+                    // onExit={() => setCountUp(false)}
                     >
                       {countUp ? (
                         <CountUp
                           start={0}
-                          end={Number(data.value.replace('+', ''))}
+                          end={Number(data.value.replace(/[^\d]/g, ''))}
                           duration={2}
                           delay={0}
                         />
                       ) : null}
-                      {data?.name === "Positive Feedback" ? "%+" : "+"}
+                      {data?.name === "Positive Feedback" ? "%+" : data?.name === "Generation of Farmers" ? "th" : "+"}
                       </ScrollTrigger>
                     
                   </StatNumber>

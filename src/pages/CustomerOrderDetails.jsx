@@ -45,6 +45,7 @@ export default function CustomerOrderDetails() {
   const [CartCount, setCartCount] = useState(
     localStorage.getItem("cart_counter") ?? 0
   );
+
   const [formData, setFormData] = useState({
     id: null,
     name: null,
@@ -136,8 +137,9 @@ export default function CustomerOrderDetails() {
   };
   async function handleOnlinePayment() {
     setPayment(true); // Set the payment loading state
-
+    
     const data = {
+      order_id: orderDetails.order_id,
       txnid: new Date().getTime().toString(), // Generate a unique transaction ID
       amount: orderDetails.final_total?.toString() || "0", // Use the total amount from the order details
       productinfo: orderDetails.is_gift ? "Gift" : "SOSE", // Check if it's a gift
@@ -151,12 +153,18 @@ export default function CustomerOrderDetails() {
 
     // Send request to backend for payment link
     try {
-      const res = await client.post("/get-order-payment-link/", data, {
-        headers: {
-          Authorization: `token ${checkLogin().token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+
+      const res = await client.patch(
+        `edit-order-payment-link/`,
+        data,
+        {
+          // params: {order_id : orderDetails.order_id},
+          headers: {
+            Authorization: `token ${checkLogin().token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (res.data.status === true) {
         setTxt_new_id(res.data.txn_id);
@@ -169,7 +177,7 @@ export default function CustomerOrderDetails() {
         });
       }
     } catch (error) {
-      console.error("Payment Error:", error); 
+      console.error("Payment Error:", error);
       toast({
         title: "Payment failed! Please try again.",
         status: "error",
@@ -203,30 +211,32 @@ export default function CustomerOrderDetails() {
         >
           <Heading fontWeight={500}>{orderDetails?.order_id}</Heading>
           <Flex gap={2} align="center">
-          { orderDetails.order_status !== "Cancelled" && orderDetails?.is_paid === false &&(
-              <Button size="sm" colorScheme={"brand"} isLoading={isPayment}
-                loadingText="Processing..." onClick={handleOnlinePayment}  >
-                <Icon as={BsCheck} boxSize={6} />
-                Accept and Pay
-              </Button>
-            )}
+          {
+              orderDetails.order_status !== "Cancelled" &&
+              orderDetails?.is_paid === false &&
+              orderDetails.order_status !== "Delivered" &&
+              (
+                <Button size="sm" colorScheme={"brand"} isLoading={isPayment}
+                  loadingText="Processing..." onClick={handleOnlinePayment}  >
+                  <Icon as={BsCheck} boxSize={6} />
+                  Accept and Pay
+                </Button>
+              )}
+
+           
             {orderDetails.order_status !== "Pending" &&
               orderDetails.is_invoiced && (
                 <>
-                  <IconButton
-                    icon={<BsPrinter fontSize={"1.25rem"} />}
-                    size="md"
-                    bg={"transparent"}
-                    color={"brand"}
-                    onClick={() => printFun()}
-                  />
-                  <IconButton
-                    icon={<BsDownload fontSize={"1.25rem"} />}
-                    size="md"
-                    bg={"transparent"}
-                    color={"brand"}
-                    onClick={() => downloadPdf()}
-                  />
+                <Button
+                    size="sm"
+                    colorScheme={"brand"}
+                    isLoading={isPayment}
+                    loadingText="Processing..."
+                    onClick={downloadPdf}
+                    rightIcon={<BsDownload fontSize="1.1rem" />}
+                  >
+                    Invoice
+                  </Button>
                 </>
               )}
           </Flex>
