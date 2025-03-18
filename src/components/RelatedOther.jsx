@@ -58,19 +58,14 @@ const RelatedOther = () => {
     }, [productId]);
 
 
-    const allowedWebsites = products.product_websites || [];
-
+    const SITE_ID = 19;
 
     const filteredOtherProducts = otherProducts.filter(
-        (product) => JSON.stringify(product.product_websites.sort())
-            === JSON.stringify(allowedWebsites.sort())
+        (product) => product.product_websites?.includes(SITE_ID)
     );
     const filteredRelatedProducts = relatedProducts.filter(
-        (product) => JSON.stringify(product.product_websites.sort())
-            === JSON.stringify(allowedWebsites.sort())
+        (product) => product.product_websites?.includes(SITE_ID)
     );
-
-    console.log("products", products.product_website)
 
 
 
@@ -97,7 +92,7 @@ const RelatedOther = () => {
                         justify="center"
                         loading={loading}
                         fontSize={{ base: "sm", lg: "md" }}
-                        type={"carousal"}
+                        type={isMobile && "carousal"}
                     />
                 )}
 
