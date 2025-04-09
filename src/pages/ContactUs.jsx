@@ -22,6 +22,7 @@ import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useLocation } from "react-router-dom";
 import MetaTags from "../context/MetaTagsContext";
+import Captcha from "../components/Captcha";
 
 export default function ContactUs() {
   let { search } = useLocation();
@@ -37,14 +38,14 @@ export default function ContactUs() {
     inquiry_description: "",
     age_group: "00 to 06",
   });
-
+  const [verified, setVerified] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
   const toast = useToast();
   const loginInfo = checkLogin();
-  const width = useBreakpointValue({md:"340px",base:"300px"})
+  const width = useBreakpointValue({ md: "340px", base: "300px" })
   useEffect(() => {
     getCountries(); // eslint-disable-next-line
   }, []);
@@ -134,12 +135,38 @@ export default function ContactUs() {
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
-
-       {IsMobileView !== "true" && <Navbar />}
+      {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Contact Us"} secondUrl={"/contact-us"} />
       </Container>
-     
+      {/* <Container maxW={"container.xl"} mb={4} px={0} >
+      <Box
+        w={"100%"}
+        bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg"}
+        bgSize="cover"
+        bgPosition="center"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={"-10px"}
+        py={20}
+        boxShadow={"0px 0px 0px 0px"}
+        backdropFilter="blur(10px)"
+        height={"550px"}
+        // mb={10}
+      >
+        <Text
+          pb={2}
+          color={"brand.100"}
+          textAlign={"center"}
+          textShadow={"lightgreen"}
+          fontSize="6xl"
+          fontWeight="700"
+        >
+          Contact  Us
+        </Text>
+      </Box>
+      </Container> */}
       <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg" />
 
@@ -154,12 +181,12 @@ export default function ContactUs() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-          // Optional: Add background to improve text readability
+        // Optional: Add background to improve text readability
         >
           Contact  Us
         </Text>
       </Container>
-      <Container maxW="container.lg" pb={10}>
+      <Container maxW="container.lg" pb={10} display={"flex"} flexDirection={"column"} alignItems={"center"}>
         {/* <Text
           pb={2}
           size="xl"
@@ -180,13 +207,13 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
           >
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "170px" }}
             >
               Your Company
             </FormLabel>
@@ -208,14 +235,14 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "170px" }}
             >
               Your Name
             </FormLabel>
@@ -237,14 +264,14 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "125px" }}
             >
               Your country
             </FormLabel>
@@ -277,8 +304,8 @@ export default function ContactUs() {
               chakraStyles={{
                 inputContainer: (provided) => ({
                   ...provided,
-                  maxWidth:width,
-                  minWidth:width,
+                  maxWidth: width,
+                  minWidth: width,
                 }),
               }}
               variant={"outline"}
@@ -301,14 +328,14 @@ export default function ContactUs() {
             <FormControl
               as={Flex}
               direction={{ base: "column", md: "row" }}
-               align={{md:"center",base:"start"}}
+              align={{ md: "center", base: "start" }}
               isRequired
               mt="5"
             >
               <FormLabel
                 fontSize="sm"
                 mb={0}
-                width={{ base: "auto", md: "200px" }}
+                width={{ base: "auto", md: "170px" }}
               >
                 Phone Number
               </FormLabel>
@@ -337,14 +364,14 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "170px" }}
             >
               Email
             </FormLabel>
@@ -366,14 +393,14 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "170px" }}
             >
               Subject
             </FormLabel>
@@ -395,7 +422,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
             mb={"5"}
@@ -403,7 +430,7 @@ export default function ContactUs() {
             <FormLabel
               fontSize="sm"
               mb={0}
-              width={{ base: "auto", md: "200px" }}
+              width={{ base: "auto", md: "170px" }}
             >
               Your Queries
             </FormLabel>
@@ -423,11 +450,19 @@ export default function ContactUs() {
               }
             />
           </FormControl>
-          <Container maxW={"lg"} p="0">
-            <Button type="submit" isLoading={loading} loadingText={"Sending"} colorScheme={"brand"}>
+          <Captcha onVerify={setVerified} />
+          <Container maxW="lg" p="0" display="flex" justifyContent="center" alignItems="center">
+            <Button
+              type="submit"
+              isDisabled={!verified}
+              isLoading={loading}
+              loadingText="Sending"
+              colorScheme="brand"
+            >
               Send
             </Button>
           </Container>
+
         </form>
 
       </Container>
