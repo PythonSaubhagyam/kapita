@@ -372,7 +372,7 @@ export default function Navbar() {
             // height="50px"
             boxSize="130px"
             objectFit="contain"
-            src="/kapita_logo.jpg"
+            src="/kapita_logo.png"
             alt="SOSE Logo"
           />
         </Link>
@@ -546,9 +546,9 @@ export default function Navbar() {
             <DrawerHeader as={Flex} justify="center">
               <Link as={ReactRouterLink} to="/">
                 <Image
-                  boxSize="105px"
+                  boxSize="120px"
                   objectFit="contain"
-                  src="/kapita_logo.jpg"
+                  src="/kapita_logo.png"
                   alt="SOSE Logo"
                 />
               </Link>
@@ -837,9 +837,10 @@ export default function Navbar() {
           >
             <Link as={ReactRouterLink} to="/">
               <Image
-                boxSize="100px"
+              p={"2"}
+                boxSize="120px"
                 objectFit="contain"
-                src="/kapita_logo.jpg"
+                src="/kapita_logo.png"
                 alt="SOSE Logo"
               />
             </Link>
