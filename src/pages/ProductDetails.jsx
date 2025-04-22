@@ -311,7 +311,7 @@ export default function ProductDetails() {
           property="og:description"
           content={productData?.metadescription}
         />
-        <meta property="og:price" content={productData?.base_price} />
+        <meta property="og:price" content={productData?.product_price || productData?.base_price} />
         <meta
           property="og:Rating"
           content={productData?.average_rating?.average_rating}
@@ -582,7 +582,7 @@ export default function ProductDetails() {
                       fontWeight={"bold"}
                       fontSize={"2xl"}
                     >
-                      ₹{productData?.base_price}
+                      ₹{Number(productData?.product_price || productData?.base_price || 0).toFixed(2)}
                     </Text>
                   </Skeleton>
 
