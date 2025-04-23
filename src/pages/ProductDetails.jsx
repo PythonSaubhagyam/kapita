@@ -305,20 +305,16 @@ export default function ProductDetails() {
       <Helmet>
         <title>{productData?.metatitle || productData?.name}</title>
         <meta name="description" content={productData?.metadescription} />
-        <meta name="keywords" content={productData?.metakeywords} />
+        <meta name="keywords" content={productData?.metakeywords || productData?.name} />
+
         <meta property="og:title" content={productData?.name} />
-        <meta
-          property="og:description"
-          content={productData?.metadescription}
-        />
-        <meta property="og:price" content={productData?.product_price || productData?.base_price} />
-        <meta
-          property="og:Rating"
-          content={productData?.average_rating?.average_rating}
-        />
-        <meta property="og:Stock" content={"In Stock"} />
-        <meta property="og:Delivery" content={"4-7 day delivery"} />
-        <meta property="og:image" content={productData?.images[0]} />
+        <meta property="og:description" content={productData?.metadescription} />
+        <meta property="product:price:amount" content={productData?.product_price || productData?.base_price} />
+        <meta property="product:price:currency" content="INR" />
+        <meta property="product:rating:average" content={productData?.average_rating?.average_rating || "5"} />
+        <meta property="product:availability" content="in stock" />
+        <meta property="og:Delivery" content="4-7 day delivery" />
+        <meta property="og:image" content={productData?.images?.[0]} />
         <meta property="og:url" content={window.location.href} />
       </Helmet>
       <Navbar />
