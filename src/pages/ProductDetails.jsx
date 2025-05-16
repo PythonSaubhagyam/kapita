@@ -48,8 +48,6 @@ import AddToCart from "../utils/addToCart";
 import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
-import ProductCarousel from "../components/ProductCarousel";
-import ProductListSection from "../components/ProductListSection";
 import dompurify from "dompurify";
 import Loader from "../components/Loader";
 import BreadCrumbCom from "../components/BreadCrumbCom";
@@ -61,6 +59,7 @@ import { Helmet } from "react-helmet";
 import { IoMdShare } from "react-icons/io";
 import { FaShareAlt, FaFacebook, FaTwitter, FaWhatsapp, FaCopy } from "react-icons/fa";
 import RelatedOther from "../components/RelatedOther";
+import useScrollRestoration from "../utils/useScrollRestoration";
 function ButtonIncrement(props) {
   return (
     <Button
@@ -114,6 +113,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
+  useScrollRestoration();
 
   // const maxWidth = useBreakpointValue({ base: "100%", lg: "container.xl" });
   // const boxWidth = useBreakpointValue({ base: "100%", lg: "75%" });

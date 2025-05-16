@@ -1,16 +1,18 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
-import { Container, Box, Text,Image } from "@chakra-ui/react";
+import { Container, Box, Text, Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
 import MetaTags from "../context/MetaTagsContext";
+import useScrollRestoration from "../utils/useScrollRestoration";
 
 export default function FAQS() {
   let { search } = useLocation();
-    const searchParams = new URLSearchParams(search);
-   const IsMobileView = searchParams.get("mobile") ?? "false";
+  const searchParams = new URLSearchParams(search);
+  const IsMobileView = searchParams.get("mobile") ?? "false";
+  useScrollRestoration();
 
   const generalInformationData = [
     {
@@ -195,10 +197,10 @@ export default function FAQS() {
   const pageUrl = "/faq";
 
   return (
-    <>      
-    <MetaTags pageUrl={pageUrl} />
+    <>
+      <MetaTags pageUrl={pageUrl} />
 
-       {IsMobileView !== "true" && <Navbar />}
+      {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"FAQ"} secondUrl={"/faq"} />
       </Container>
@@ -216,7 +218,7 @@ export default function FAQS() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-          // Optional: Add background to improve text readability
+        // Optional: Add background to improve text readability
         >
           FAQ
         </Text>
@@ -283,7 +285,7 @@ export default function FAQS() {
         </Box>
         <Accordion details={businessInquiryInformation} />
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>
   );

@@ -3,7 +3,6 @@ import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
-import CarouselWithLinks from "../components/CarouselWithLinks";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import {
   FaHeartbeat,
@@ -59,6 +58,7 @@ import {
 } from "../redux/slices/homeApi";
 import MetaHome from "../components/MetaHome";
 import BlogSliderHome from "../components/BlogSliderHome";
+import useScrollRestoration from "../utils/useScrollRestoration";
 const Diseases = [
   {
     icon: <FaHeartbeat />,
@@ -109,6 +109,7 @@ export default function Home() {
   );
   const isMobiles = width <= 768;
   const navigate = useNavigate();
+  useScrollRestoration();
 
   const dispatch = useDispatch();
   const {
@@ -178,7 +179,7 @@ export default function Home() {
         ourAboutSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} mb={8} px={0}>
             <Text
-            as={"h1"}
+              as={"h1"}
               fontSize={{ base: "xl", sm: "2xl", xl: "2xl" }}
               fontWeight={500}
               color={"text.500"}
@@ -226,16 +227,26 @@ export default function Home() {
 
       {ourCertificateSection?.length > 0 &&
         ourCertificateSection[0]?.is_visible_on_website === true && (
-          <Container mb={5} px={0} maxW={"container.xl"} centerContent>
-            <Image
-              src={ourCertificateSection[0]?.image}
-              alt=""
-              style={{
-                opacity: 1,
-                transition: "opacity 0.7s", // Note the corrected syntax here
-                width: "100%"
-              }}
-            />
+          <Container px={0} maxW={"container.xl"} centerContent>
+            {ourCertificateSection[0]?.images?.length > 0 ? (
+              loader ? (
+                <Skeleton h={489} />
+              ) : (
+                <Carousel banners={ourCertificateSection[0].images} />
+              )
+            ) : (
+              ourCertificateSection[0]?.image && (
+                <LazyLoadImage
+                  src={ourCertificateSection[0].image}
+                  alt="certificate"
+                  style={{
+                    opacity: 1,
+                    transition: "opacity 0.7s",
+                    width: "100%",
+                  }}
+                />
+              )
+            )}
           </Container>
         )}
       {ourMainProductSection?.length > 0 &&
@@ -320,7 +331,7 @@ export default function Home() {
           textAlign={{ base: "center", md: "start" }}
         >
           <Text
-          as={"h1"}
+            as={"h1"}
             fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
             fontWeight={500}
             color={"text.500"}
@@ -623,35 +634,6 @@ export default function Home() {
                   }}
                 />
               </Box>
-            </Container>
-          )}
-        {availableSection?.length > 0 &&
-          availableSection[0]?.is_visible_on_website === true && (
-            <Container maxW={"container.xl"} mb={5} px={0} centerContent>
-              <Heading
-                as={"h1"}
-                color="brand.500"
-                fontSize={{ md: 33, base: 22 }}
-                mx="auto"
-                align={"center"}
-                my={"5"}
-                pb={"10px"}
-              >
-                {availableSection?.length > 0 && availableSection[0].label}
-              </Heading>
-
-              <Image
-                src={
-                  availableSection?.length > 0 &&
-                  availableSection[0]?.images[0].image
-                }
-                w={"container.xl"}
-                alt=""
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }}
-              />
             </Container>
           )}
       </Container>

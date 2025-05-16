@@ -14,17 +14,19 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
 import MetaTags from "../context/MetaTagsContext";
+import useScrollRestoration from "../utils/useScrollRestoration";
 export default function Franchise() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
- const IsMobileView = searchParams.get("mobile") ?? "false";
- const pageUrl = "/franchise";
+  const IsMobileView = searchParams.get("mobile") ?? "false";
+  const pageUrl = "/franchise";
+  useScrollRestoration();
 
   return (
     <>
-    <MetaTags pageUrl={pageUrl} />
+      <MetaTags pageUrl={pageUrl} />
 
-     {IsMobileView !== "true" && <Navbar />}
+      {IsMobileView !== "true" && <Navbar />}
 
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Franchise"} secondUrl={"/franchise"} />
@@ -43,8 +45,8 @@ export default function Franchise() {
           boxShadow={"0px 0px 0px 0px"}
           height={"550px"}
           mb={10}
-          // filter="brightness(200%)"
-          // style={{ backdropFilter: "blur(10px)" }}
+        // filter="brightness(200%)"
+        // style={{ backdropFilter: "blur(10px)" }}
         >
           <Text
             pb={2}
@@ -411,7 +413,7 @@ export default function Franchise() {
           </Flex>
         </Center>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>
   );

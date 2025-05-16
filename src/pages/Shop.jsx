@@ -3,12 +3,8 @@ import client from "../setup/axiosClient";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
-import CategoryTree from "../components/CategoryTree";
-// import CategoryAccessTree from "../components/CategoryAccessTree";
 import ScrollToTop from "../components/ScrollToTop";
 import ShopProductCard from "../components/ShopProductCard";
-import { Helmet } from "react-helmet";
-import { fetchCategories } from "../redux/slices/categoryApi";
 import {
   Center,
   Container,
@@ -25,6 +21,8 @@ import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { fetchCategories } from "../redux/slices/categoryApi";
 import {
   Pagination,
   usePagination,
@@ -37,11 +35,11 @@ import {
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { Select } from "chakra-react-select";
 import CapitalizeLetter from "../utils/CommanFunction";
-import MetaTags from "../context/MetaTagsContext";
-
-//redux
 import { fetchFilters } from "../redux/slices/shopApi";
 import { useDispatch, useSelector } from "react-redux";
+import MetaTags from "../context/MetaTagsContext";
+import useScrollRestoration from "../utils/useScrollRestoration";
+
 // import Paginator from "../components/Paginator";
 
 export default function Shop() {
@@ -54,7 +52,7 @@ export default function Shop() {
   const [sortKey, setSortKey] = useState(null);
   const [tagWise, setTagWise] = useState(null);
   const [productFoam, setProductFoam] = useState(null);
-  const dispatch = useDispatch();
+  useScrollRestoration();
 
   const [banners, setBanners] = useState({
     bannerWeb: null,
@@ -66,13 +64,16 @@ export default function Shop() {
   const [catLoading, setCatLoading] = useState(true);
   const toast = useToast();
   let [searchParams, setSearchParams] = useSearchParams();
+  // let [searchParams, setSearchParams] = useSearchParams();
   let { search } = useLocation();
   const searchPar = new URLSearchParams(search);
   const categoryId = searchPar.get("category");
   const prod_search = searchPar.get("search");
   const page = searchPar.get("page") ? searchPar.get("page") : 1;
-
+  console.log("page", page);
   const [isMobile] = useMediaQuery("(max-width: 768px)");
+  // const [brandWise, setBrandWise] = useState({value:searchPar.get("brand"),label:searchPar.get("brand_name")});
+  // console.log("brandWise",brandWise)
   const brand = searchPar.get("brand");
   const brand_name = searchPar.get("brand_name");
   const { currentPage, setCurrentPage, pages } = usePagination({
@@ -95,21 +96,15 @@ export default function Shop() {
     localStorage.getItem("last_name"),
   ].join(" ");
 
-  useEffect(() => {
-    CheckOrSetUDID();
-    getProducts(); // eslint-disable-next-line
-  }, [categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
-
-
-  const { tagsArray, productFoamsArray, brandArray } = useSelector(state => state.shop);
+  const dispatch = useDispatch();
+  const { tagsArray, productFoamsArray, brandArray, hasFetched } = useSelector((state) => state.shop);
   const { categories } = useSelector((state) => state.category);
-
   useEffect(() => {
-
-    dispatch(fetchFilters());
-    dispatch(fetchCategories());
-
-  }, [dispatch]);
+    if (!hasFetched) {
+      dispatch(fetchFilters());
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, hasFetched]);
 
   useEffect(() => {
     if (categories?.length > 0 && categoryId) {
@@ -117,6 +112,14 @@ export default function Shop() {
       setCategory(selectedCategory);
     }
   }, [categories, categoryId]);
+
+
+
+  useEffect(() => {
+    CheckOrSetUDID();
+    getProducts(); // eslint-disable-next-line
+  }, [categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
+
 
   async function getProducts(nextPage) {
     setLoading(true);
@@ -210,7 +213,6 @@ export default function Shop() {
     const filtered = categories.filter((item) => item.id === categoryId);
     setFilteredData(filtered);
   }, [data, categoryId]);
-
 
   async function handlePageChange(nextPage) {
     setCurrentPage(nextPage);
@@ -668,35 +670,6 @@ export default function Shop() {
             </Flex>
           )}
         </Flex>
-        {/* )} */}
-        {/* <div itemScope itemType="http://schema.org/Product">
-          <meta itemProp="brand" content="facebook" />
-          <meta itemProp="name" content="Facebook T-Shirt" />
-          <meta
-            itemProp="description"
-            content="Unisex Facebook T-shirt, Small"
-          />
-          <meta itemProp="productID" content="facebook_tshirt_001" />
-          <meta itemProp="url" content="https://example.org/facebook" />
-          <meta itemProp="image" content="https://example.org/facebook.jpg" />
-          <div
-            itemProp="value"
-            itemScope
-            itemType="http://schema.org/PropertyValue"
-          >
-            <span itemProp="propertyID" content="item_group_id" />
-            <meta itemProp="value" content="fb_tshirts" />
-          </div>
-          <div itemProp="offers" itemScope itemType="http://schema.org/Offer">
-            <link itemProp="availability" href="http://schema.org/InStock" />
-            <link
-              itemProp="itemCondition"
-              href="http://schema.org/NewCondition"
-            />
-            <meta itemProp="price" content="7.99" />
-            <meta itemProp="priceCurrency" content="USD" />
-          </div>
-        </div> */}
       </Container>
       <ScrollToTop />
       <Footer />
